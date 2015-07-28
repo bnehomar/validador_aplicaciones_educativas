@@ -4,6 +4,8 @@
 #
 # Esto es Software Libre bajo licencia GPL3
 # Autor: Ing. Diego Aguilera
+# Yoel Jerez
+# Nehomar Barragán 
 # http://diegoaguilera.com
 #
 
