@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkFileChooserDialog" id="filechooser">
+    <property name="width_request">425</property>
+    <property name="height_request">365</property>
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <property name="default_width">425</property>
+    <property name="default_height">365</property>
+    <property name="type_hint">normal</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox1">
+        <property name="width_request">425</property>
+        <property name="height_request">365</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="boton_filechooser_cancelar">
+                <property name="label" translatable="yes">Cancelar</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_boton_filechooser_cancelar_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="boton_filechooser_grabar">
+                <property name="label" translatable="yes">Grabar</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_boton_filechooser_grabar_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">boton_filechooser_cancelar</action-widget>
+      <action-widget response="0">boton_filechooser_grabar</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkWindow" id="ventana">
+    <property name="width_request">450</property>
+    <property name="height_request">350</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Herramienta de Diagnostico para Contenidos</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <child>
+      <object class="GtkLayout" id="layout1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="width">80</property>
+        <property name="height">80</property>
+        <child>
+          <object class="GtkEntry" id="ruta">
+            <property name="width_request">362</property>
+            <property name="height_request">27</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">●</property>
+            <property name="text" translatable="yes">/usr/share/contenido-educativo/</property>
+          </object>
+          <packing>
+            <property name="x">55</property>
+            <property name="y">90</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label1">
+            <property name="width_request">39</property>
+            <property name="height_request">20</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Ruta:
+</property>
+          </object>
+          <packing>
+            <property name="x">12</property>
+            <property name="y">95</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="boton_diagnosticar">
+            <property name="label" translatable="yes">Validar</property>
+            <property name="use_action_appearance">False</property>
+            <property name="width_request">124</property>
+            <property name="height_request">34</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+            <signal name="clicked" handler="on_boton_diagnosticar_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">164</property>
+            <property name="y">260</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label2">
+            <property name="width_request">150</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">  Archivos Duplicados:</property>
+          </object>
+          <packing>
+            <property name="x">24</property>
+            <property name="y">129</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label3">
+            <property name="width_request">260</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Archivos con Nombres Inválidos:</property>
+          </object>
+          <packing>
+            <property name="x">31</property>
+            <property name="y">205</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="boton_consultar">
+            <property name="label" translatable="yes">Consultar</property>
+            <property name="use_action_appearance">False</property>
+            <property name="width_request">124</property>
+            <property name="height_request">34</property>
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+            <signal name="clicked" handler="on_boton_consultar_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">28</property>
+            <property name="y">260</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="etiqueta_duplicados">
+            <property name="width_request">130</property>
+            <property name="height_request">25</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">xxx Encontrados</property>
+          </object>
+          <packing>
+            <property name="x">275</property>
+            <property name="y">135</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="etiqueta_nombres_invalidos">
+            <property name="width_request">130</property>
+            <property name="height_request">25</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">xxx Encontrados</property>
+          </object>
+          <packing>
+            <property name="x">275</property>
+            <property name="y">214</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label6">
+            <property name="width_request">260</property>
+            <property name="height_request">42</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Archivos con Formatos Inválidos:</property>
+          </object>
+          <packing>
+            <property name="x">28</property>
+            <property name="y">168</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="etiqueta_formatos_invalidos">
+            <property name="width_request">130</property>
+            <property name="height_request">25</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">xxx Encontrados</property>
+          </object>
+          <packing>
+            <property name="x">275</property>
+            <property name="y">176</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkProgressBar" id="progressbar1">
+            <property name="width_request">123</property>
+            <property name="height_request">22</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="x">164</property>
+            <property name="y">300</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="image1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">arriba.png</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="boton_corregir">
+            <property name="label" translatable="yes">Corregir</property>
+            <property name="use_action_appearance">False</property>
+            <property name="width_request">124</property>
+            <property name="height_request">34</property>
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+            <signal name="clicked" handler="on_boton_corregir_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">302</property>
+            <property name="y">260</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="ventana_corregidos">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox" id="box1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkImage" id="image3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">arriba1.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Correcciones realizadas, para ver los resultados
+        pulse "Consultar" en la ventana principallabel</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="boton_aceptar_correcciones">
+            <property name="label">gtk-ok</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="margin_left">150</property>
+            <property name="margin_right">150</property>
+            <property name="margin_bottom">40</property>
+            <property name="use_action_appearance">False</property>
+            <property name="use_stock">True</property>
+            <signal name="clicked" handler="on_boton_aceptar_correcciones_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="ventana_visor">
+    <property name="width_request">650</property>
+    <property name="height_request">495</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Lista de Archivos</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <child>
+      <object class="GtkLayout" id="layout2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton" id="boton_visor_grabar">
+            <property name="label" translatable="yes">Grabar</property>
+            <property name="use_action_appearance">False</property>
+            <property name="width_request">82</property>
+            <property name="height_request">35</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
+            <signal name="clicked" handler="on_boton_visor_grabar_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">280</property>
+            <property name="y">451</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
+            <property name="width_request">623</property>
+            <property name="height_request">428</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkTextView" id="textview">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">14</property>
+            <property name="y">13</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
+    <property name="window_position">center</property>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkImage" id="image2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="pixbuf">arriba1.png</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Esta ruta no existe , Por favor verficarla
+     y volver a pulsar  "Validar"</property>
+            <property name="angle">0.01</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button_existe">
+                    <property name="label" translatable="yes">Aceptar</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_boton_button_existe_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
