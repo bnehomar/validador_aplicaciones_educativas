@@ -287,8 +287,7 @@ class herramienta_diag:
 				if filename.find('.') > -1:
 				    tipo_formato = filename.split(".")[-1]				    
 				    id_formato_archivo = self.get_formato_archivo(tipo_formato)
-                
-                
+                		
 				add_archivo = ('''INSERT INTO archivo
 				(nombre_arch, ubicacion_arch,id_analisis,id_formato_archivo)
 				VALUES (%s,%s,%s,%s)''')				
@@ -405,10 +404,10 @@ class herramienta_diag:
 					add_archivo = '''INSERT INTO formatos_corregidos
 						(id_form_inval)
 						VALUES (%s)'''
-	                args = (row[0])
-	                self.cursor.execute(add_archivo, args)
-	                os.popen("rm -f "+ruta_arch).read()
-			retval = p.wait()
+					args = (row[0])
+					self.cursor.execute(add_archivo, args)
+					os.popen("rm -f "+ruta_arch).read()
+					retval = p.wait()
 		return True
 	
     def get_comando_convertir(self, tipo_archivo, ruta_archivo):
