@@ -1,0 +1,57 @@
+#### conectar con una bdd
+ mysql> use mibasedatos; 
+
+#### ver las bdd
+ mysql> show databases;
+
+#### ver tablas
+ mysql> show tables; 
+
+
+##### Lista la estructura de una tabla, mostrando los nombres de los campos, el tipo de datos y otras propiedades.
+
+mysql> SHOW FIELDS FROM employees;
+
+
+########Lista todas las columnas y registros de una tabla.
+SELECT * FROM employees;
+
+
+########Devuelve el total de registros en la tabla.
+SELECT COUNT(*) FROM <nombre_tabla>
+
+
+##########Devuelve la sumatoria de campos numéricos.
+SELECT SUM(salary) FROM salaries;
+
+
+
+
+#### dump a la bdd
+$mysqldump -u nombreusuario -p bdd > bdd.sql
+
+
+#### restaurar la bdd
+$mysql -u nombreusuario -p  bdd < bdd.sql
+
+
+
+
+
+
+
+###crear usuario en mysql
+mysql> CREATE USER 'user'@'localhost' IDENTIFIED BY 'clave';
+
+
+### asignar todos los privilegios al usuario creado
+mysql> GRANT ALL PRIVILEGES ON * . * TO 'user'@'localhost';
+
+### borrar usuario 
+mysql> DROP USER 'usuario_prueba'@'localhost';
+
+
+
+
+
+
