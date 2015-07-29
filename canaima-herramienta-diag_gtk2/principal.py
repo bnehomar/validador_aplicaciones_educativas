@@ -161,7 +161,7 @@ class herramienta_diag:
     def on_consulta_duplicados_eliminados_clicked(self, widget):
 		print "duplicados eliminados"
 
-		self.db = MySQLdb.connect("localhost","root","canaima","dc_ce")
+		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 		self.cursor = self.db.cursor()
 
 		query = '''SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
@@ -565,7 +565,7 @@ class herramienta_diag:
 		print "corregir"
 		self.barra.set_fraction(0.0)
 		#Se crea conexión a db
-		self.db = MySQLdb.connect("localhost","root","canaima","dc_ce")
+		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 		self.cursor = self.db.cursor()
 		#abrir transaccion db
 		self.db.autocommit(False)			
@@ -601,7 +601,7 @@ class herramienta_diag:
         print self.data_cd
         if self.data_cd:			
 			#Se crea conexión a db
-			self.db = MySQLdb.connect("localhost","root","canaima","dc_ce")
+			self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 			self.cursor = self.db.cursor()
 			#abrir transaccion db
 			self.db.autocommit(False)			
