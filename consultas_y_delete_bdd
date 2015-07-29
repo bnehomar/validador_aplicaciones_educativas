@@ -1,0 +1,52 @@
+DELETE FROM nombres_corregidos;
+DELETE FROM nombres_invalidos;
+DELETE FROM formatos_corregidos;
+DELETE FROM formatos_invalidos;
+DELETE FROM archivos_duplicados_eliminados;
+DELETE FROM archivos_duplicados;
+DELETE FROM archivo;
+DELETE FROM analisis_contenido;
+
+#Archivos duplicados eliminados
+SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
+FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
+inner join archivos_duplicados ad on a.id_archivo = ad.id_archivo
+inner join archivos_duplicados_eliminados ade on ad.id_arch_dup = ade.id_arch_dup
+where ac.fecha_analisis = '2015-07-25'
+and ac.hora_analisis = '22:28:35'
+#ac.id_analisis = 301;
+
+#Archivos formatos corregidos
+SELECT fi.id_form_inval, a.id_archivo, a.nombre_arch, 
+    a.ubicacion_arch, fa.decrip_form_arch, ac.id_analisis
+FROM analisis_contenido ac 
+inner join archivo a 
+on ac.id_analisis = a.id_analisis 
+inner join formato_archivo fa
+on a.id_formato_archivo = fa.id_formato_archivo
+inner join formatos_invalidos fi 
+on a.id_archivo = fi.id_archivo
+inner join formatos_corregidos fc
+on fi.id_form_inval = fc.id_form_inval
+where ac.fecha_analisis = '2015-07-25'
+and ac.hora_analisis = '22:28:35
+
+#Archivos nombres corregidos
+SELECT ni.id_nomb_inval, a.nombre_arch, a.ubicacion_arch, 
+ac.id_analisis
+FROM analisis_contenido ac 
+inner join archivo a 
+on ac.id_analisis = a.id_analisis 
+inner join nombres_invalidos ni
+on a.id_archivo = ni.id_archivo
+inner join nombres_corregidos nc
+on ni.id_nomb_inval = nc.id_nomb_inval
+where ac.fecha_analisis = '2015-07-25'
+and ac.hora_analisis = '22:28:35'
+
+
+
+
+
+
+
