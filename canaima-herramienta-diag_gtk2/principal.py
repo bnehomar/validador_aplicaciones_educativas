@@ -79,6 +79,11 @@ class herramienta_diag:
         
         self.boton_consultar = self.constructor.get_object("boton_consultar")
         self.boton_corregir = self.constructor.get_object("boton_corregir")
+
+		#####botones de la ventana consulta####################
+        self.ventana_consultas = self.constructor.get_object("ventana-consultas")
+        #self.ventana_consultas.connect ("delete_event", Gtk.main_quit)
+        #self.consulta_duplicados_eliminados = self.constructor.get.object("consulta_duplicados_eliminados")
         
         #self.boton_nombres_invalidos = self.constructor.get_object("boton_nombres_invalidos")
         #self.boton_formatos_invalidos = self.constructor.get_object("boton_formatos_invalidos")
@@ -103,6 +108,10 @@ class herramienta_diag:
         #Ventana corregidos
         self.ventana_corregidos = self.constructor.get_object("ventana_corregidos")
         self.ventana_corregidos.connect("delete_event", self.ocultar_ventana_corregidos)
+
+		#Ventana consultar
+        self.ventana_consultas = self.constructor.get_object("ventana_consultas")
+        #self.ventana_consultas.connect("delete_event", self.ocultar_ventana_consultas)
     
     def ocultar_visor(self, window,event):
         self.ventana_visor.hide()
@@ -111,12 +120,16 @@ class herramienta_diag:
     def ocultar_ventana_corregidos(self, window, event):
         self.ventana_corregidos.hide()
         return True 
+
+	def ocultar_ventana_consultas(self, window, event):
+		self.ventana_consultas.hide()
+        return True 
                       
     def on_boton_nombres_invalidos_clicked(self, widget):
         self.textview.set_buffer(self.nombres_invalidos)
         self.lista1 ="invalidos"
         #print "lissssta :"+self.lista1
-	self.ventana_visor.show()
+        self.ventana_visor.show()
         
     def on_boton_duplicados_clicked(self, widget):
         self.textview.set_buffer(self.archivos_duplicados)
@@ -129,6 +142,71 @@ class herramienta_diag:
         self.lista1 = "formatos"
         #print "lissssta :"+self.lista1
         self.ventana_visor.show()
+        
+###############consultas###################################
+###############consultas###################################
+###############consultas###################################
+###############consultas################################### 
+###############consultas###################################
+###############consultas###################################    
+
+    #def on_boton_consultar_clicked(self, widget):
+		#self.ventana_consultas.show()
+        #self.textview.set_buffer(self.nombres_invalidos)
+        #self.lista1 ="invalidos"
+        #print "lissssta :"+self.lista1
+        #self.ventana_visor.show()
+
+ 
+    def on_consulta_duplicados_eliminados_clicked(self, widget):
+		print "duplicados eliminados"
+
+		self.db = MySQLdb.connect("localhost","root","canaima","dc_ce")
+		self.cursor = self.db.cursor()
+
+		query = '''SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
+					FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
+					inner join archivos_duplicados ad on a.id_archivo = ad.id_archivo
+					inner join archivos_duplicados_eliminados ade on ad.id_arch_dup = ade.id_arch_dup'''
+				
+		#args = (id_analisis_contenido)
+		self.cursor.execute(query)
+        
+		registros = self.cursor.fetchall()
+        
+		#values = dict()
+		self.variable_duplicados_eliminados = Gtk.TextBuffer()
+		for row in registros:			
+			self.variable_duplicados_eliminados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
+
+		#cerrar conexion			
+		self.cursor.close()
+		self.db.close()
+
+		self.textview.set_buffer(self.variable_duplicados_eliminados)
+		self.ventana_visor.show()
+
+    def on_consulta_formatos_corregidos_clicked(self, widget):
+		print "formatos corregidos"
+	
+    def on_consulta_nombres_corregidos_clicked(self, widget):
+		print "nombres corregidos"
+
+    def on_consulta_archivos_duplicados_clicked(self, widget):
+		print "archivos duplicados"
+
+    def on_consulta_formatos_invalidos_clicked(self, widget):
+		print "formatos invalidos"
+
+    def on_consulta_nombres_invalidos_clicked(self, widget):
+		print "nombres invalidos"
+
+       # self.textview.set_buffer(self.nombres_invalidos)
+        #self.lista1 ="invalidos"
+        #print "lissssta :"+self.lista1
+       # self.ventana_visor.show()
+	
+####################consultas#############################
 
 
     def proceso_nombre_invalidos(self, id_analisis_contenido):
@@ -372,6 +450,9 @@ class herramienta_diag:
 		
     def on_boton_consultar_clicked(self, widget):
 		print "consultar"
+		self.ventana_consultas.show()
+
+	####def on_boton_##############
 		
     def proceso_formatos_corregidos(self, id_analisis_contenido):
 		print "proceso_formatos_corregidos"
@@ -510,6 +591,7 @@ class herramienta_diag:
 		
 		self.ventana_corregidos.show()
 			
+
                    
     def on_boton_diagnosticar_clicked(self, widget):
         # Proceso        
