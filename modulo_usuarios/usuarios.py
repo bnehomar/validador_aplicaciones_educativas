@@ -39,7 +39,7 @@ class Proceso_agregar_usuarios():
     
     def __init__(self):
         #Se crea conexión a db
-        self.db = MySQLdb.connect("localhost","root","canaima","dc_ce")
+        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
     
     def insertar_usuario(self):
             nombre = str(raw_input('Ingrese su Nombre: '))
@@ -57,12 +57,12 @@ class Proceso_agregar_usuarios():
                                 #abrir transaccion db
                                     self.db.autocommit(False)
                                 #Se verifica que no existe la cedula
-                                    ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = '%s' cedula  ''')
-                                    resultado=cursor.fetchall()
-                                    #if(mysql_num_rows(ver_cedula)>0) 
-                                   
-                                    self.cursor.execute (ver_cedula) 
-                                    print cedula   
+                                    ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = %s''')
+
+                                    #if(mysql_num_rows(ver_cedula)>0)                                    
+                                    self.cursor.execute(ver_cedula, cedula) 
+                                    resultado=self.cursor.fetchall()
+                                      
                                 #Se crear un registro en la tabla usuarios
                                     add_usuario = (''' INSERT INTO usuarios
                                     (nombre, apellido, cedula, clave)
@@ -70,6 +70,7 @@ class Proceso_agregar_usuarios():
                                     args = (nombre, apellido, cedula, clave)
                                     self.cursor.execute (add_usuario, args)
                                     self.db.commit()
+                                    print "usuario ingresado"
                                 except:
                                     print("Error inesperado:", sys.exc_info())
                                     self.db.rollback()
