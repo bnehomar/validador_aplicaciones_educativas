@@ -489,7 +489,11 @@
               </packing>
             </child>
             <child>
+<<<<<<< HEAD
               <object class="GtkEntry" id="entry_incluir_nombre">
+=======
+              <object class="GtkEntry" id="entry3">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">10</property>
@@ -517,7 +521,11 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
+<<<<<<< HEAD
               <object class="GtkLabel" id="label_incluir_apellido">
+=======
+              <object class="GtkLabel" id="boton_incluir_apellido">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">50</property>
@@ -534,7 +542,11 @@
               </packing>
             </child>
             <child>
+<<<<<<< HEAD
               <object class="GtkEntry" id="entry_incluir_apellido">
+=======
+              <object class="GtkEntry" id="entry4">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">12</property>
@@ -562,7 +574,11 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
+<<<<<<< HEAD
               <object class="GtkLabel" id="label_incluir_cedula">
+=======
+              <object class="GtkLabel" id="boton_incluir_cedula">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">50</property>
@@ -579,7 +595,11 @@
               </packing>
             </child>
             <child>
+<<<<<<< HEAD
               <object class="GtkEntry" id="entry_incluir_cedula">
+=======
+              <object class="GtkEntry" id="entry5">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">23</property>
@@ -607,7 +627,11 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
+<<<<<<< HEAD
               <object class="GtkLabel" id="label_incluir_clave">
+=======
+              <object class="GtkLabel" id="boton_incluir_clave">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">60</property>
@@ -624,7 +648,11 @@
               </packing>
             </child>
             <child>
+<<<<<<< HEAD
               <object class="GtkEntry" id="entry_incluir_clave">
+=======
+              <object class="GtkEntry" id="entry6">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_left">20</property>
@@ -648,6 +676,7 @@
           </packing>
         </child>
         <child>
+<<<<<<< HEAD
           <object class="GtkGrid" id="grid12">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -694,6 +723,8 @@
           </packing>
         </child>
         <child>
+=======
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
           <object class="GtkButton" id="boton_aceptar_incluir">
             <property name="label" translatable="yes">Aceptar</property>
             <property name="use_action_appearance">False</property>
@@ -709,7 +740,11 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+<<<<<<< HEAD
             <property name="position">6</property>
+=======
+            <property name="position">5</property>
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
           </packing>
         </child>
       </object>
@@ -1029,6 +1064,7 @@
           </packing>
         </child>
         <child>
+<<<<<<< HEAD
           <object class="GtkGrid" id="grid13">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -1076,6 +1112,9 @@
         </child>
         <child>
           <object class="GtkButton" id="boton_aceptar_usuario_modificar">
+=======
+          <object class="GtkButton" id="button_aceptar_usuario_modificar">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
             <property name="label">gtk-ok</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -1091,7 +1130,11 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+<<<<<<< HEAD
             <property name="position">6</property>
+=======
+            <property name="position">5</property>
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
           </packing>
         </child>
       </object>

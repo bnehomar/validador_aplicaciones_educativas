@@ -389,6 +389,199 @@
     </child>
   </object>
   <object class="GtkWindow" id="ventana_consultas">
+<<<<<<< HEAD
+=======
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Menú de Consultas</property>
+    <property name="window_position">center</property>
+    <child>
+      <object class="GtkBox" id="box2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkImage" id="image4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
+            <property name="pixbuf">arriba.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid" id="grid1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkButton" id="consulta_duplicados_eliminados">
+                <property name="label" translatable="yes">Archivos Duplicados
+ 
+	Eliminados</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_left">50</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">40</property>
+                <property name="use_action_appearance">False</property>
+                <property name="relief">half</property>
+                <signal name="clicked" handler="on_consulta_duplicados_eliminados_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="consulta_nombres_corregidos">
+                <property name="label" translatable="yes">Archivos con Nombres
+		
+ 	 Corregidos  </property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">50</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">40</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_consulta_nombres_corregidos_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="consulta_formatos_corregidos">
+                <property name="label" translatable="yes">Archivos con Formatos
+
+ 	   Corregidos </property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">40</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_consulta_formatos_corregidos_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkGrid" id="grid2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkButton" id="consulta_archivos_duplicados">
+                <property name="label" translatable="yes">Archivos Duplicados
+
+	Encontrados</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_left">50</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">40</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_consulta_archivos_duplicados_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="consulta_formatos_invalidos">
+                <property name="label" translatable="yes">Archivos Con Formatos 
+
+  Inválidos Encontrados</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">40</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_consulta_formatos_invalidos_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="consulta_nombres_invalidos">
+                <property name="label" translatable="yes">Archivos Con Nombres
+
+  Inválidos Encontrados </property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">50</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">40</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_consulta_nombres_invalidos_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="top_attach">0</property>
+                <property name="width">1</property>
+                <property name="height">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="ventana_corregidos">
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Menú de Consultas</property>
     <property name="window_position">center</property>
@@ -773,6 +966,7 @@
       </object>
     </child>
   </object>
+<<<<<<< HEAD
   <object class="GtkWindow" id="window_cedula_no_existe">
     <property name="can_focus">False</property>
     <child>
@@ -897,6 +1091,8 @@
       </object>
     </child>
   </object>
+=======
+>>>>>>> 2becc5d51397b824ff598695e1477189e8ce251f
   <object class="GtkWindow" id="window_error_cedula">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Error en Cédula</property>
