@@ -73,6 +73,9 @@ class Proceso_usuarios():
         self.combobox_activar_usuario.set_active(0)
 
         self.window_usuario_incluido = self.constructor.get_object("window_usuario_incluido")
+        self.window_errores_incluir_usuario = self.constructor.get_object("window_errores_incluir_usuario")
+        self.label_errores_insertar_usuario = self.constructor.get_object("label_errores_insertar_usuario")
+        self.boton_aceptar_errores_incluir_usuario = self.constructor.get_object("boton_aceptar_errores_incluir_usuario")
 
         #self.boton_aceptar_incluir_usuario = self.constructor.get_object("boton_aceptar_incluir_usuario")
 
@@ -95,8 +98,11 @@ class Proceso_usuarios():
 		errores = self.validar_datos_usuario()
 
 		if len(errores) > 0:
+			self.window_errores_incluir_usuario.show()
+			errores_text = ""
 			for error in errores:
-				print error
+				errores_text =  errores_text + error +"\n"
+			self.label_errores_insertar_usuario.set_text(errores_text)
 		else:
 			print "Insertar"
 			self.insertar_usuario()
@@ -183,6 +189,9 @@ class Proceso_usuarios():
         self.entry_incluir_clave.set_text("")
         self.combobox_activar_usuario.set_active(0)
         self.window_usuario_incluido.hide()
+
+    def on_boton_aceptar_errores_incluir_usuario_clicked(self, widget):
+    	self.window_errores_incluir_usuario.hide()
 
 
 if __name__ == '__main__':
