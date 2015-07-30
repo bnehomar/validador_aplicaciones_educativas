@@ -89,6 +89,7 @@
             <property name="margin_bottom">30</property>
             <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
+            <signal name="clicked" handler="on_button_aceptar_cedula_modificar_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -151,6 +152,7 @@
             <property name="margin_bottom">30</property>
             <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
+            <signal name="clicked" handler="on_button_aceptar_cedula_no_existe_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -974,6 +976,7 @@
             <property name="margin_bottom">10</property>
             <property name="use_action_appearance">False</property>
             <property name="relief">half</property>
+            <signal name="clicked" handler="on_boton_modificar_usuario_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1150,6 +1153,7 @@
                 <property name="margin_right">40</property>
                 <property name="margin_top">10</property>
                 <property name="margin_bottom">10</property>
+                <property name="editable">False</property>
                 <property name="invisible_char">•</property>
                 <property name="invisible_char_set">True</property>
               </object>
@@ -1196,6 +1200,7 @@
                 <property name="margin_right">30</property>
                 <property name="margin_top">10</property>
                 <property name="margin_bottom">10</property>
+                <property name="visibility">False</property>
                 <property name="invisible_char">•</property>
                 <property name="invisible_char_set">True</property>
               </object>
@@ -1252,15 +1257,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="entry_modificar_activar">
+              <object class="GtkComboBox" id="combobox_activar_modificar_usuario">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">30</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
-                <property name="invisible_char">•</property>
-                <property name="invisible_char_set">True</property>
+                <property name="can_focus">False</property>
+                <signal name="changed" handler="on_combobox_activar_usuario_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -1289,6 +1289,7 @@
             <property name="margin_bottom">30</property>
             <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
+            <signal name="clicked" handler="on_boton_aceptar_usuario_modificar_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1477,6 +1478,7 @@
             <property name="margin_bottom">30</property>
             <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
+            <signal name="clicked" handler="on_button_usuario_modificado_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
