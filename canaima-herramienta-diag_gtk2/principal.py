@@ -69,7 +69,15 @@ class herramienta_diag:
         #self.constructor= gtk.Builder()
         self.constructor= Gtk.Builder()
         self.constructor.add_from_file("herramienta_diag_gui.glade")
-        self.constructor.connect_signals(self)
+        self.constructor.connect_signals(self)      
+       
+        # ventana de inicio de sesion 
+        self.inicio_sesion = self.constructor.get_object("inicio_sesion")
+        self.text_entry_cedula = self.constructor.get_object("text_entry_cedula")
+        self.text_entry_clave = self.constructor.get_object("text_entry_clave")
+        #self.boton_aceptar_sesion = self.constructor.get_object("boton_aceptar_sesion")
+        self.inicio_sesion.connect ("delete_event", Gtk.main_quit)
+        
         # ventana principal
         self.ventana = self.constructor.get_object("ventana")
         #self.ventana.connect ("delete_event", gtk.main_quit)
@@ -103,7 +111,8 @@ class herramienta_diag:
         #no existe ruta 
         self.window1 = self.constructor.get_object("window1")
         self.button_existe = self.constructor.get_object("button_existe")
-        self.ventana.show()
+        #self.ventana.show()
+        self.inicio_sesion.show()
         
         #Ventana corregidos
         self.ventana_corregidos = self.constructor.get_object("ventana_corregidos")
@@ -142,6 +151,11 @@ class herramienta_diag:
         self.lista1 = "formatos"
         #print "lissssta :"+self.lista1
         self.ventana_visor.show()
+
+    def on_boton_aceptar_sesion_clicked(self, widget):
+        print "on_boton_aceptar_sesion_clicked"
+        self.inicio_sesion.hide()
+        self.ventana.show()
         
 ###############consultas###################################
 ###############consultas###################################

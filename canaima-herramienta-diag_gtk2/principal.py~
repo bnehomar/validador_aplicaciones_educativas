@@ -69,7 +69,15 @@ class herramienta_diag:
         #self.constructor= gtk.Builder()
         self.constructor= Gtk.Builder()
         self.constructor.add_from_file("herramienta_diag_gui.glade")
-        self.constructor.connect_signals(self)
+        self.constructor.connect_signals(self)      
+       
+        # ventana de inicio de sesion 
+        self.inicio_sesion = self.constructor.get_object("inicio_sesion")
+        self.text_entry_cedula = self.constructor.get_object("text_entry_cedula")
+        self.text_entry_clave = self.constructor.get_object("text_entry_clave")
+        #self.boton_aceptar_sesion = self.constructor.get_object("boton_aceptar_sesion")
+        self.inicio_sesion.connect ("delete_event", Gtk.main_quit)
+        
         # ventana principal
         self.ventana = self.constructor.get_object("ventana")
         #self.ventana.connect ("delete_event", gtk.main_quit)
@@ -103,7 +111,8 @@ class herramienta_diag:
         #no existe ruta 
         self.window1 = self.constructor.get_object("window1")
         self.button_existe = self.constructor.get_object("button_existe")
-        self.ventana.show()
+        #self.ventana.show()
+        self.inicio_sesion.show()
         
         #Ventana corregidos
         self.ventana_corregidos = self.constructor.get_object("ventana_corregidos")
@@ -142,8 +151,18 @@ class herramienta_diag:
         self.lista1 = "formatos"
         #print "lissssta :"+self.lista1
         self.ventana_visor.show()
+
+    def on_boton_aceptar_sesion_clicked(self, widget):
+        print "on_boton_aceptar_sesion_clicked"
+        self.inicio_sesion.hide()
+        self.ventana.show()
         
-###############consultas###################################   
+###############consultas###################################
+###############consultas###################################
+###############consultas###################################
+###############consultas################################### 
+###############consultas###################################
+###############consultas###################################    
 
     #def on_boton_consultar_clicked(self, widget):
 		#self.ventana_consultas.show()
@@ -156,7 +175,7 @@ class herramienta_diag:
     def on_consulta_duplicados_eliminados_clicked(self, widget):
 		print "duplicados eliminados"
 
-		self.db = MySQLdb.connect("localhost","root","canaima","dc_ce")
+		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 		self.cursor = self.db.cursor()
 
 		query = '''SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
@@ -172,20 +191,73 @@ class herramienta_diag:
 		#values = dict()
 		self.variable_duplicados_eliminados = Gtk.TextBuffer()
 		for row in registros:			
-			self.variable_duplicados_eliminados.insert_at_cursor(row[0]+" - "+row[1] +" - "+row[2]+ " - "+row[3]+"\n")
+			self.variable_duplicados_eliminados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
 
 		#cerrar conexion			
 		self.cursor.close()
 		self.db.close()
 
-		self.textview.set_buffer(variable_duplicados_eliminados)
+		self.textview.set_buffer(self.variable_duplicados_eliminados)
 		self.ventana_visor.show()
 
     def on_consulta_formatos_corregidos_clicked(self, widget):
 		print "formatos corregidos"
+		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+		self.cursor = self.db.cursor()
+
+		query = '''SELECT fi.id_form_inval, a.id_archivo, a.nombre_arch, 
+					a.ubicacion_arch, fa.decrip_form_arch, ac.id_analisis
+					FROM analisis_contenido ac 
+					inner join archivo a on ac.id_analisis = a.id_analisis 
+					inner join formato_archivo fa on a.id_formato_archivo = fa.id_formato_archivo
+					inner join formatos_invalidos fi on a.id_archivo = fi.id_archivo
+					inner join formatos_corregidos fc on fi.id_form_inval = fc.id_form_inval'''
+				
+		#args = (id_analisis_contenido)
+		self.cursor.execute(query)
+        
+		registros = self.cursor.fetchall()
+        
+		#values = dict()
+		self.variable_formatos_corregidos = Gtk.TextBuffer()
+		for row in registros:			
+			self.variable_formatos_corregidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n")
+
+		#cerrar conexion			
+		self.cursor.close()
+		self.db.close()
+
+		self.textview.set_buffer(self.variable_formatos_corregidos)
+		self.ventana_visor.show()
 	
     def on_consulta_nombres_corregidos_clicked(self, widget):
 		print "nombres corregidos"
+		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+		self.cursor = self.db.cursor()
+
+		query = '''SELECT ni.id_nomb_inval, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
+					FROM analisis_contenido ac 
+					inner join archivo a on ac.id_analisis = a.id_analisis 
+					inner join nombres_invalidos ni on a.id_archivo = ni.id_archivo
+					inner join nombres_corregidos nc on ni.id_nomb_inval = nc.id_nomb_inval'''
+									
+		#args = (id_analisis_contenido)
+		self.cursor.execute(query)
+        
+		registros = self.cursor.fetchall()
+        
+		#values = dict()
+		self.variable_nombres_corregidos = Gtk.TextBuffer()
+		for row in registros:			
+			self.variable_nombres_corregidos.insert_at_cursor((str(row[0]))+"        -        "+(str(row[1]))+"        -        "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
+
+		#cerrar conexion			
+		self.cursor.close()
+		self.db.close()
+
+		self.textview.set_buffer(self.variable_nombres_corregidos)
+		self.ventana_visor.show()
+	
 
     def on_consulta_archivos_duplicados_clicked(self, widget):
 		print "archivos duplicados"
@@ -560,7 +632,7 @@ class herramienta_diag:
 		print "corregir"
 		self.barra.set_fraction(0.0)
 		#Se crea conexión a db
-		self.db = MySQLdb.connect("localhost","root","canaima","dc_ce")
+		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 		self.cursor = self.db.cursor()
 		#abrir transaccion db
 		self.db.autocommit(False)			
@@ -596,7 +668,7 @@ class herramienta_diag:
         print self.data_cd
         if self.data_cd:			
 			#Se crea conexión a db
-			self.db = MySQLdb.connect("localhost","root","canaima","dc_ce")
+			self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 			self.cursor = self.db.cursor()
 			#abrir transaccion db
 			self.db.autocommit(False)			
