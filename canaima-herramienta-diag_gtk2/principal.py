@@ -188,9 +188,62 @@ class herramienta_diag:
 
     def on_consulta_formatos_corregidos_clicked(self, widget):
 		print "formatos corregidos"
+		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+		self.cursor = self.db.cursor()
+
+		query = '''SELECT fi.id_form_inval, a.id_archivo, a.nombre_arch, 
+					a.ubicacion_arch, fa.decrip_form_arch, ac.id_analisis
+					FROM analisis_contenido ac 
+					inner join archivo a on ac.id_analisis = a.id_analisis 
+					inner join formato_archivo fa on a.id_formato_archivo = fa.id_formato_archivo
+					inner join formatos_invalidos fi on a.id_archivo = fi.id_archivo
+					inner join formatos_corregidos fc on fi.id_form_inval = fc.id_form_inval'''
+				
+		#args = (id_analisis_contenido)
+		self.cursor.execute(query)
+        
+		registros = self.cursor.fetchall()
+        
+		#values = dict()
+		self.variable_formatos_corregidos = Gtk.TextBuffer()
+		for row in registros:			
+			self.variable_formatos_corregidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n")
+
+		#cerrar conexion			
+		self.cursor.close()
+		self.db.close()
+
+		self.textview.set_buffer(self.variable_formatos_corregidos)
+		self.ventana_visor.show()
 	
     def on_consulta_nombres_corregidos_clicked(self, widget):
 		print "nombres corregidos"
+		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+		self.cursor = self.db.cursor()
+
+		query = '''SELECT ni.id_nomb_inval, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
+					FROM analisis_contenido ac 
+					inner join archivo a on ac.id_analisis = a.id_analisis 
+					inner join nombres_invalidos ni on a.id_archivo = ni.id_archivo
+					inner join nombres_corregidos nc on ni.id_nomb_inval = nc.id_nomb_inval'''
+									
+		#args = (id_analisis_contenido)
+		self.cursor.execute(query)
+        
+		registros = self.cursor.fetchall()
+        
+		#values = dict()
+		self.variable_nombres_corregidos = Gtk.TextBuffer()
+		for row in registros:			
+			self.variable_nombres_corregidos.insert_at_cursor((str(row[0]))+"        -        "+(str(row[1]))+"        -        "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
+
+		#cerrar conexion			
+		self.cursor.close()
+		self.db.close()
+
+		self.textview.set_buffer(self.variable_nombres_corregidos)
+		self.ventana_visor.show()
+	
 
     def on_consulta_archivos_duplicados_clicked(self, widget):
 		print "archivos duplicados"
