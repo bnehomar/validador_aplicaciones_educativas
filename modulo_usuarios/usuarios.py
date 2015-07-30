@@ -52,6 +52,7 @@ class Proceso_usuarios():
         self.window_menu_usuario.connect ("delete_event", Gtk.main_quit)
 
         self.window_incluir_usuario = self.constructor.get_object("window_incluir_usuario")
+        self.window_incluir_usuario.connect ("delete_event", self.on_hide_window_incluir_usuario)
 
         #Datos del usuario
         self.entry_incluir_nombre = self.constructor.get_object("entry_incluir_nombre")
@@ -80,12 +81,15 @@ class Proceso_usuarios():
         #self.boton_aceptar_incluir_usuario = self.constructor.get_object("boton_aceptar_incluir_usuario")
 
         self.window_cedula_modificar_usuario = self.constructor.get_object("window_cedula_modificar_usuario")
+        self.window_cedula_modificar_usuario.connect ("delete_event", self.on_hide_window_cedula_modificar_usuario)
+
         self.entry_cedula_modificar = self.constructor.get_object("entry_cedula_modificar")
 
         self.window_cedula_no_existe = self.constructor.get_object("window_cedula_no_existe")
 
         #Modificar usuario
         self.window_modificar_usuario = self.constructor.get_object("window_modificar_usuario")
+        self.window_modificar_usuario.connect ("delete_event", self.on_hide_window_modificar_usuario)
         #Datos del usuario
         self.entry_modificar_nombre = self.constructor.get_object("entry_modificar_nombre")
         self.entry_modificar_apellido = self.constructor.get_object("entry_modificar_apellido")
@@ -114,6 +118,18 @@ class Proceso_usuarios():
     	print "on_boton_incluir_usuarios_clicked"
 
     	self.window_incluir_usuario.show()
+
+    def on_hide_window_incluir_usuario(self, window, event):
+    	self.window_incluir_usuario.hide()
+    	return True
+
+    def on_hide_window_cedula_modificar_usuario(self, window, event):
+    	self.window_cedula_modificar_usuario.hide()
+    	return True
+
+    def on_hide_window_modificar_usuario(self, window, event):
+    	self.window_modificar_usuario.hide()
+    	return True
 
     def on_boton_aceptar_incluir_usuario_clicked(self, widget):
 		print "boton_aceptar_incluir_usuario"
