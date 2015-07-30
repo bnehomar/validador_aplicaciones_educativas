@@ -75,8 +75,13 @@ class herramienta_diag:
         self.inicio_sesion = self.constructor.get_object("inicio_sesion")
         self.text_entry_cedula = self.constructor.get_object("text_entry_cedula")
         self.text_entry_clave = self.constructor.get_object("text_entry_clave")
+
+		
         #self.boton_aceptar_sesion = self.constructor.get_object("boton_aceptar_sesion")
         self.inicio_sesion.connect ("delete_event", Gtk.main_quit)
+
+		# ventana de error de validacion en inicio de sesion
+        self.window_error_validar_sesion = self.constructor.get_object("window_error_validar_sesion")
         
         # ventana principal
         self.ventana = self.constructor.get_object("ventana")
@@ -154,8 +159,56 @@ class herramienta_diag:
 
     def on_boton_aceptar_sesion_clicked(self, widget):
         print "on_boton_aceptar_sesion_clicked"
-        self.inicio_sesion.hide()
-        self.ventana.show()
+        errores = self.validar_datos_usuario()
+
+        if len(errores) > 0:
+					self.window_error_validar_sesion.show()
+					errores_text = ""
+					for error in errores:
+						errores_text =  errores_text + error +"\n"
+					self.label_error_validar_sesion.set_text(errores_text)
+        else:
+        	self.inicio_sesion.hide()
+        	self.ventana.show()
+
+def validar_datos_usuario(self):
+
+    	errores = []
+    	self.cedula = self.entry_incluir_cedula.get_text()
+        self.clave = self.entry_incluir_clave.get_text()
+
+      
+        if self.cedula == "":
+        	errores.append("La cédula no puede ser vacia")
+        else:
+        	if not self.cedula.isdigit():
+        		errores.append("La cédula debe ser numérica")
+        	else:
+        		if self.cedula_existe(self.cedula):
+        			errores.append("La cédula ya existe. Coloque otra.")
+        if self.clave == "":
+        	errores.append("La clave no puede ser vacia")
+
+		return errores
+
+def cedula_existe(self, cedula):
+
+    	existe = False
+    	#Se crea conexión a db
+        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.cursor = self.db.cursor()
+        #Se verifica que no existe la cedula
+        ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = %s''')                                 
+        self.cursor.execute(ver_cedula, cedula)
+
+        if self.cursor.fetchone() != None:
+        	existe = True
+
+        #cerrar conexion			
+        self.cursor.close()
+        self.db.close()
+
+        return existe
         
 ###############consultas###################################
 ###############consultas###################################
@@ -172,7 +225,7 @@ class herramienta_diag:
         #self.ventana_visor.show()
 
  
-    def on_consulta_duplicados_eliminados_clicked(self, widget):
+def on_consulta_duplicados_eliminados_clicked(self, widget):
 		print "duplicados eliminados"
 
 		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
@@ -200,7 +253,7 @@ class herramienta_diag:
 		self.textview.set_buffer(self.variable_duplicados_eliminados)
 		self.ventana_visor.show()
 
-    def on_consulta_formatos_corregidos_clicked(self, widget):
+def on_consulta_formatos_corregidos_clicked(self, widget):
 		print "formatos corregidos"
 		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 		self.cursor = self.db.cursor()
@@ -230,7 +283,7 @@ class herramienta_diag:
 		self.textview.set_buffer(self.variable_formatos_corregidos)
 		self.ventana_visor.show()
 	
-    def on_consulta_nombres_corregidos_clicked(self, widget):
+def on_consulta_nombres_corregidos_clicked(self, widget):
 		print "nombres corregidos"
 		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 		self.cursor = self.db.cursor()
@@ -259,13 +312,13 @@ class herramienta_diag:
 		self.ventana_visor.show()
 	
 
-    def on_consulta_archivos_duplicados_clicked(self, widget):
+def on_consulta_archivos_duplicados_clicked(self, widget):
 		print "archivos duplicados"
 
-    def on_consulta_formatos_invalidos_clicked(self, widget):
+def on_consulta_formatos_invalidos_clicked(self, widget):
 		print "formatos invalidos"
 
-    def on_consulta_nombres_invalidos_clicked(self, widget):
+def on_consulta_nombres_invalidos_clicked(self, widget):
 		print "nombres invalidos"
 
        # self.textview.set_buffer(self.nombres_invalidos)
@@ -276,7 +329,7 @@ class herramienta_diag:
 ####################consultas#############################
 
 
-    def proceso_nombre_invalidos(self, id_analisis_contenido):
+def proceso_nombre_invalidos(self, id_analisis_contenido):
         
         # proceso correspondiente a nombres invalidos
         #self.nombres_invalidos = gtk.TextBuffer()
@@ -309,7 +362,7 @@ class herramienta_diag:
         
         return True
 
-    def proceso_nombre_invalidos_dos(self, id_analisis_contenido):
+def proceso_nombre_invalidos_dos(self, id_analisis_contenido):
         # proceso correspondiente a nombres invalidos
         #self.nombres_invalidos = gtk.TextBuffer()
         self.nombres_invalidos = Gtk.TextBuffer()
@@ -357,7 +410,7 @@ class herramienta_diag:
         #self.barra.set_fraction(0.33) #progressbar variable
 	return True 
         
-    def proceso_duplicados(self, id_analisis_contenido):
+def proceso_duplicados(self, id_analisis_contenido):
        
        duplicados = self.findDuplicates(self.ruta.get_text())       
        for duplicado in duplicados:
