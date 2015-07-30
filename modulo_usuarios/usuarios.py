@@ -74,7 +74,11 @@ class Proceso_usuarios():
         self.combobox_activar_usuario.set_active(0)
 
         self.window_usuario_incluido = self.constructor.get_object("window_usuario_incluido")
+        self.window_usuario_incluido.connect ("delete_event", self.on_hide_window_usuario_incluido)
+
         self.window_errores_incluir_usuario = self.constructor.get_object("window_errores_incluir_usuario")
+        self.window_errores_incluir_usuario.connect ("delete_event", self.on_hide_window_errores_incluir_usuario)
+
         self.label_errores_insertar_usuario = self.constructor.get_object("label_errores_insertar_usuario")
         self.boton_aceptar_errores_incluir_usuario = self.constructor.get_object("boton_aceptar_errores_incluir_usuario")
 
@@ -86,6 +90,7 @@ class Proceso_usuarios():
         self.entry_cedula_modificar = self.constructor.get_object("entry_cedula_modificar")
 
         self.window_cedula_no_existe = self.constructor.get_object("window_cedula_no_existe")
+        self.window_cedula_no_existe.connect ("delete_event", self.on_hide_window_cedula_no_existe)
 
         #Modificar usuario
         self.window_modificar_usuario = self.constructor.get_object("window_modificar_usuario")
@@ -104,6 +109,7 @@ class Proceso_usuarios():
         self.combobox_activar_modificar_usuario.add_attribute(self.cell, 'text', 1)
 
         self.window_usuario_modificado = self.constructor.get_object("window_usuario_modificado")
+        self.window_usuario_modificado.connect ("delete_event", self.on_hide_window_usuario_modificado)
 
         self.window_menu_usuario.show()
 
@@ -129,6 +135,22 @@ class Proceso_usuarios():
 
     def on_hide_window_modificar_usuario(self, window, event):
     	self.window_modificar_usuario.hide()
+    	return True
+
+    def on_hide_window_errores_incluir_usuario(self, window, event):
+    	self.window_errores_incluir_usuario.hide()
+    	return True
+
+    def on_hide_window_usuario_incluido(self, window, event):
+    	self.window_usuario_incluido.hide()
+    	return True
+
+    def on_hide_window_cedula_no_existe(self, window, event):
+    	self.window_cedula_no_existe.hide()
+    	return True
+
+    def on_hide_window_usuario_modificado(self, window, event):
+    	self.window_usuario_modificado.hide()
     	return True
 
     def on_boton_aceptar_incluir_usuario_clicked(self, widget):
