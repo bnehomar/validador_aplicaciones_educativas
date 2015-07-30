@@ -72,6 +72,8 @@ class Proceso_usuarios():
         self.combobox_activar_usuario.add_attribute(self.cell, 'text', 1)
         self.combobox_activar_usuario.set_active(0)
 
+        self.window_usuario_incluido = self.constructor.get_object("window_usuario_incluido")
+
         #self.boton_aceptar_incluir_usuario = self.constructor.get_object("boton_aceptar_incluir_usuario")
 
         self.window_menu_usuario.show()
@@ -89,79 +91,99 @@ class Proceso_usuarios():
     	self.window_incluir_usuario.show()
 
     def on_boton_aceptar_incluir_usuario_clicked(self, widget):
-    	print "boton_aceptar_incluir_usuario"
-    	self.validar_datos_usuario()
+		print "boton_aceptar_incluir_usuario"
+		errores = self.validar_datos_usuario()
+
+		if len(errores) > 0:
+			for error in errores:
+				print error
+		else:
+			print "Insertar"
+			self.insertar_usuario()
+
 
     def validar_datos_usuario(self):
 
     	errores = []
-    	nombre = self.entry_incluir_nombre.get_text()
-        apellido = self.entry_incluir_apellido.get_text()
-        cedula = self.entry_incluir_cedula.get_text()
-        clave = self.entry_incluir_clave.get_text()
-        activo = self.item
+    	self.nombre = self.entry_incluir_nombre.get_text()
+        self.apellido = self.entry_incluir_apellido.get_text()
+        self.cedula = self.entry_incluir_cedula.get_text()
+        self.clave = self.entry_incluir_clave.get_text()
+        self.activo = self.item
 
-        if (nombre == ""):
-        	print ""
+        if self.nombre == "":
+        	errores.append("El nombre no puede ser vacio")
+        if self.apellido == "":
+        	errores.append("El apellido no puede ser vacio")
+        if self.cedula == "":
+        	errores.append("La cédula no puede ser vacia")
+        else:
+        	if not self.cedula.isdigit():
+        		errores.append("La cédula debe ser numérica")
+        	else:
+        		if self.cedula_existe(self.cedula):
+        			errores.append("La cédula ya existe. Coloque otra.")
+        if self.clave == "":
+        	errores.append("La clave no puede ser vacia")
 
-    	return True
+    	return errores
+
+    def cedula_existe(self, cedula):
+
+    	existe = False
+    	#Se crea conexión a db
+        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.cursor = self.db.cursor()
+        #Se verifica que no existe la cedula
+        ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = %s''')                                 
+        self.cursor.execute(ver_cedula, cedula)
+
+        if self.cursor.fetchone() != None:
+        	existe = True
+
+        #cerrar conexion			
+        self.cursor.close()
+        self.db.close()
+
+        return existe
 
     def insertar_usuario(self):
     	#Se crea conexión a db
         self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 
-        nombre = str(raw_input('Ingrese su Nombre: '))
-        if nombre != "":
-            apellido = str(raw_input('Ingrese su Apellido: '))
-            if apellido != "":
-                cedula = str(raw_input('Ingrese su Cédula: '))
-                if cedula != "":
-                    if cedula.isdigit(): 
-                        clave = str(raw_input('Ingrese una clave: '))
-                        if clave != "":
-                          
-                            try:
-                                self.cursor = self.db.cursor()
-                            #abrir transaccion db
-                                self.db.autocommit(False)
-                            #Se verifica que no existe la cedula
-                                ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = %s''')
-
-                                #if(mysql_num_rows(ver_cedula)>0)                                    
-                                self.cursor.execute(ver_cedula, cedula) 
-                                resultado=self.cursor.fetchall()
-                                  
-                            #Se crear un registro en la tabla usuarios
-                                add_usuario = (''' INSERT INTO usuarios
-                                (nombre, apellido, cedula, clave)
-                                VALUES (%s, %s, %s, %s) ''')
-                                args = (nombre, apellido, cedula, clave)
-                                self.cursor.execute (add_usuario, args)
-                                self.db.commit()
-                                print "usuario ingresado"
-                            except:
-                                print("Error inesperado:", sys.exc_info())
-                                self.db.rollback()
-                                
-                            #cerrar transaccion db
-                            self.db.autocommit(True)
-                            #cerrar conexion			
-                            self.cursor.close()
-                        else:
-                            print("definir una clave es obligatorio\n")
-                    else:
-        
-                        print("Error en la cédula, ingrese solo números\n")
-                else:
-        
-                    print("Ingresar la cedúla es obligatorio\n")
-            else:
-        
-                print("Ingresar el apellido es obligatorio\n")
+        if self.activo == "No":
+        	act = "N"
         else:
-            print("Ingresar el nombre es obligatorio\n")
+        	if self.activo == "Si":
+        		act = "S"
 
+        try:
+            self.cursor = self.db.cursor()
+	         
+	        #Se crear un registro en la tabla usuarios
+            add_usuario = (''' INSERT INTO usuarios
+            (nombre, apellido, cedula, clave, activo)
+            VALUES (%s, %s, %s, %s, %s) ''')
+            args = (self.nombre, self.apellido, self.cedula, self.clave, act)
+            self.cursor.execute (add_usuario, args)
+            self.db.commit()
+            print "usuario ingresado"
+            self.window_usuario_incluido.show()
+        except:
+            print("Error inesperado:", sys.exc_info())
+            self.db.rollback()
+        #cerrar conexion			
+        self.cursor.close()
         self.db.close()
+
+    def on_button_aceptar_usuario_incluido_clicked(self, widget):
+    	self.entry_incluir_nombre.set_text("")
+        self.entry_incluir_apellido.set_text("")
+        self.entry_incluir_cedula.set_text("")
+        self.entry_incluir_clave.set_text("")
+        self.combobox_activar_usuario.set_active(0)
+        self.window_usuario_incluido.hide()
+
 
 if __name__ == '__main__':
     p = Proceso_usuarios() 
