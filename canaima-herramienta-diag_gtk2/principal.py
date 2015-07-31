@@ -82,6 +82,7 @@ class herramienta_diag:
         self.inicio_sesion.connect ("delete_event", Gtk.main_quit)
 
         self.window_errores_iniciar_sesion = self.constructor.get_object("window_errores_iniciar_sesion")
+        self.window_errores_iniciar_sesion.connect ("delete_event", self.on_hide_window_errores_iniciar_sesion)
         self.label_errores_iniciar_sesion = self.constructor.get_object("label_errores_iniciar_sesion")
 
         ####datos inicio sesion
@@ -142,6 +143,10 @@ class herramienta_diag:
 
     def on_hide_window1(self, window, event):
         self.window1.hide()
+        return True
+
+    def on_hide_window_errores_iniciar_sesion(self, window, event):
+        self.window_errores_iniciar_sesion.hide()
         return True
 
     
@@ -1016,6 +1021,9 @@ class herramienta_diag:
 
     def on_boton_button_existe_clicked(self,widget):
         self.window1.hide()
+
+    def on_boton_aceptar_errores_iniciar_sesion_clicked(self,widget):
+        self.window_errores_iniciar_sesion.hide()
     
     def on_boton_aceptar_correcciones_clicked(self,widget):
         self.ventana_corregidos.hide()
