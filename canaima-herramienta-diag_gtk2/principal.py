@@ -260,20 +260,97 @@ class herramienta_diag:
 	
 
     def on_consulta_archivos_duplicados_clicked(self, widget):
-		print "archivos duplicados"
+        print "archivos duplicados"
+
+        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.cursor = self.db.cursor()
+
+        query = '''SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis 
+                    FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
+                    inner join archivos_duplicados ad on a.id_archivo = ad.id_archivo'''
+                    #inner join usuarios usr on usr.id_usuario = ac.id_usuario
+                    #where usr.id_usuario = @varglobal
+
+        self.cursor.execute(query)
+        
+        registros = self.cursor.fetchall()
+        
+        #values = dict()
+        self.variable_duplicados = Gtk.TextBuffer()
+        for row in registros:           
+            self.variable_duplicados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
+
+        #cerrar conexion            
+        self.cursor.close()
+        self.db.close()
+
+        self.textview.set_buffer(self.variable_duplicados)
+        self.ventana_visor.show()
+
+
 
     def on_consulta_formatos_invalidos_clicked(self, widget):
-		print "formatos invalidos"
+        print "formatos invalidos"
+
+        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.cursor = self.db.cursor()
+
+        query = '''SELECT fi.id_form_inval, a.id_archivo, a.nombre_arch, a.ubicacion_arch, fa.decrip_form_arch, ac.id_analisis
+                    FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
+                    inner join formato_archivo fa on a.id_formato_archivo = fa.id_formato_archivo
+                    inner join formatos_invalidos fi on a.id_archivo = fi.id_archivo'''
+                    #inner join usuarios usr on usr.id_usuario = ac.id_usuario
+                    #where usr.id_usuario = @varglobal
+
+        self.cursor.execute(query)
+        
+        registros = self.cursor.fetchall()
+        
+        #values = dict()
+        self.variable_formatos_invalidos = Gtk.TextBuffer()
+        for row in registros:           
+            self.variable_formatos_invalidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n")
+        #cerrar conexion            
+        self.cursor.close()
+        self.db.close()
+
+        self.textview.set_buffer(self.variable_formatos_invalidos)
+        self.ventana_visor.show()
 
     def on_consulta_nombres_invalidos_clicked(self, widget):
-		print "nombres invalidos"
+        print "nombres invalidos"
+
+        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.cursor = self.db.cursor()
+
+        query = '''SELECT ni.id_nomb_inval, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
+                    FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
+                    inner join nombres_invalidos ni on a.id_archivo = ni.id_archivo'''
+                    #inner join usuarios usr on usr.id_usuario = ac.id_usuario
+                    #where usr.id_usuario = @varglobal
+
+        self.cursor.execute(query)
+        
+        registros = self.cursor.fetchall()
+        
+        #values = dict()
+        self.variable_nombres_invalidos = Gtk.TextBuffer()
+        for row in registros:           
+            self.variable_nombres_invalidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"\n")
+        #cerrar conexion            
+        self.cursor.close()
+        self.db.close()
+
+        self.textview.set_buffer(self.variable_nombres_invalidos)
+        self.ventana_visor.show()
+
 
        # self.textview.set_buffer(self.nombres_invalidos)
         #self.lista1 ="invalidos"
         #print "lissssta :"+self.lista1
        # self.ventana_visor.show()
 	
-####################consultas#############################
+######################    fin de consultas    #############################
 
 
     def proceso_nombre_invalidos(self, id_analisis_contenido):
