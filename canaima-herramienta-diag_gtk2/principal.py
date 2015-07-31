@@ -384,12 +384,14 @@ class herramienta_diag:
 		self.cursor = self.db.cursor()
 
 		query = '''SELECT fi.id_form_inval, a.id_archivo, a.nombre_arch, 
-					a.ubicacion_arch, fa.decrip_form_arch, ac.id_analisis
+					a.ubicacion_arch, fa.decrip_form_arch, ac.id_analisis,
+                    ac.fecha_analisis, ac.hora_analisis, u.cedula, concat(u.nombre,' ',u.apellido)
 					FROM analisis_contenido ac 
-					inner join archivo a on ac.id_analisis = a.id_analisis 
+					inner join archivo a on ac.id_analisis = a.id_analisis  
 					inner join formato_archivo fa on a.id_formato_archivo = fa.id_formato_archivo
 					inner join formatos_invalidos fi on a.id_archivo = fi.id_archivo
-					inner join formatos_corregidos fc on fi.id_form_inval = fc.id_form_inval'''
+					inner join formatos_corregidos fc on fi.id_form_inval = fc.id_form_inval
+                    inner join usuarios u on u.idusuarios = ac.idusuario'''
 				
 		#args = (id_analisis_contenido)
 		self.cursor.execute(query)
@@ -398,12 +400,12 @@ class herramienta_diag:
         
 		#values = dict()
 		self.variable_formatos_corregidos = Gtk.TextBuffer()
-		header = "Id del Archivo con Formato Invalido         -         Id del Archivo          -         Nombre del Archivo         -         Ubicación del Archivo         -         Tipo del Formato         -         Id del Análisis\n"
+		header = "Id del Archivo con Formato Invalido         -         Id del Archivo          -         Nombre del Archivo         -         Ubicación del Archivo         -         Tipo del Formato         -         Id del Análisis    - Fecha del Análisis   - Hora del Análisis    - Cédula del analista    -  Nombre y Apellido del Analista\n"
 		self.variable_formatos_corregidos.insert_at_cursor(header)		
 		self.data_formatos_corregidos = header
 		for row in registros:			
-			self.variable_formatos_corregidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n")
-			self.data_formatos_corregidos = self.data_formatos_corregidos +str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n"
+			self.variable_formatos_corregidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"      -      "+(str(row[6]))+"     -     "+(str(row[7]))+"     -       "+(str(row[8]))+"     -     "+(str(row[9]))+"\n")
+			self.data_formatos_corregidos = self.data_formatos_corregidos + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"      -      "+(str(row[6]))+"     -     "+(str(row[7]))+"     -       "+(str(row[8]))+"     -       "+(str(row[9]))+"\n"
 
 		#cerrar conexion			
 		self.cursor.close()
@@ -418,11 +420,13 @@ class herramienta_diag:
 		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 		self.cursor = self.db.cursor()
 
-		query = '''SELECT ni.id_nomb_inval, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
+		query = '''SELECT ni.id_nomb_inval, a.nombre_arch, a.ubicacion_arch, ac.id_analisis, 
+                    ac.fecha_analisis, ac.hora_analisis, u.cedula, concat(u.nombre,' ',u.apellido)
 					FROM analisis_contenido ac 
 					inner join archivo a on ac.id_analisis = a.id_analisis 
 					inner join nombres_invalidos ni on a.id_archivo = ni.id_archivo
-					inner join nombres_corregidos nc on ni.id_nomb_inval = nc.id_nomb_inval'''
+					inner join nombres_corregidos nc on ni.id_nomb_inval = nc.id_nomb_inval
+                    inner join usuarios u on u.idusuarios = ac.idusuario'''
 									
 		#args = (id_analisis_contenido)
 		self.cursor.execute(query)
@@ -431,12 +435,12 @@ class herramienta_diag:
         
 		#values = dict()
 		self.variable_nombres_corregidos = Gtk.TextBuffer()
-		header = "Id Nombre Invalido        -       Nombre del Archivo         -       Ubicación del Archivo          -         Id del Análisis\n"
+		header = "Id Nombre Invalido        -       Nombre del Archivo         -       Ubicación del Archivo          -         Id del Análisis      -      Fecha    -    Hora     -    Cédula    -    Nombre y Apellido\n"
 		self.variable_nombres_corregidos.insert_at_cursor(header)
 		self.data_nombres_corregidos = header
 		for row in registros:			
-			self.variable_nombres_corregidos.insert_at_cursor((str(row[0]))+"        -        "+(str(row[1]))+"        -        "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
-			self.data_nombres_corregidos = self.data_nombres_corregidos + (str(row[0]))+"        -        "+(str(row[1]))+"        -        "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n"
+			self.variable_nombres_corregidos.insert_at_cursor((str(row[0]))+"        -        "+(str(row[1]))+"        -        "+(str(row[2]))+ "         -         "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"      -      "+(str(row[6]))+"     -     "+(str(row[7]))+"\n")
+			self.data_nombres_corregidos = self.data_nombres_corregidos + (str(row[0]))+"        -        "+(str(row[1]))+"        -        "+(str(row[2]))+ "         -         "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"      -      "+(str(row[6]))+"     -     "+(str(row[7]))+"\n"
 		#cerrar conexion			
 		self.cursor.close()
 		self.db.close()
@@ -452,9 +456,11 @@ class herramienta_diag:
         self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
         self.cursor = self.db.cursor()
 
-        query = '''SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis 
+        query = '''SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis, 
+                    ac.fecha_analisis, ac.hora_analisis, u.cedula, concat(u.nombre,' ',u.apellido) 
                     FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
-                    inner join archivos_duplicados ad on a.id_archivo = ad.id_archivo'''
+                    inner join archivos_duplicados ad on a.id_archivo = ad.id_archivo
+                    inner join usuarios u on u.idusuarios = ac.idusuario'''
                     #inner join usuarios usr on usr.id_usuario = ac.id_usuario
                     #where usr.id_usuario = @varglobal
 
@@ -464,12 +470,12 @@ class herramienta_diag:
         
         #values = dict()
         self.variable_duplicados = Gtk.TextBuffer()
-        header = " Id del Archivo Duplicado        -         Nombre del Archivo         -         Ubicación del Archivo         -         Id del Análisis\n"
+        header = " Id del Archivo Duplicado        -         Nombre del Archivo         -         Ubicación del Archivo         -         Id del Análisis      -      Fecha    -    Hora     -    Cédula    -    Nombre y Apellido\n"
         self.variable_duplicados.insert_at_cursor(header)
         self.data_duplicados = header
         for row in registros:           
-            self.variable_duplicados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
-            self.data_duplicados = self.data_duplicados + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n"
+            self.variable_duplicados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"      -      "+(str(row[6]))+"     -     "+(str(row[7]))+"\n")
+            self.data_duplicados = self.data_duplicados + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"      -      "+(str(row[6]))+"     -     "+(str(row[7]))+"\n"
 
         #cerrar conexion            
         self.cursor.close()
@@ -487,10 +493,12 @@ class herramienta_diag:
         self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
         self.cursor = self.db.cursor()
 
-        query = '''SELECT fi.id_form_inval, a.id_archivo, a.nombre_arch, a.ubicacion_arch, fa.decrip_form_arch, ac.id_analisis
+        query = '''SELECT fi.id_form_inval, a.id_archivo, a.nombre_arch, a.ubicacion_arch, fa.decrip_form_arch, ac.id_analisis,
+                    ac.fecha_analisis, ac.hora_analisis, u.cedula, concat(u.nombre,' ',u.apellido)
                     FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
                     inner join formato_archivo fa on a.id_formato_archivo = fa.id_formato_archivo
-                    inner join formatos_invalidos fi on a.id_archivo = fi.id_archivo'''
+                    inner join formatos_invalidos fi on a.id_archivo = fi.id_archivo
+                    inner join usuarios u on u.idusuarios = ac.idusuario'''
                     #inner join usuarios usr on usr.id_usuario = ac.id_usuario
                     #where usr.id_usuario = @varglobal
 
@@ -500,12 +508,12 @@ class herramienta_diag:
         
         #values = dict()
         self.variable_formatos_invalidos = Gtk.TextBuffer()
-        header = "Id del Formato Invalido         -         Id del Archivo         -         Nombre del Archivo        -        Ubicación del Archivo        -        Tipo del Formato         -         Id del Análisis\n"
+        header = "Id del Formato Invalido         -         Id del Archivo         -         Nombre del Archivo        -        Ubicación del Archivo        -        Tipo del Formato         -         Id del Análisis      -      Fecha    -    Hora     -    Cédula    -    Nombre y Apellido\n"
         self.variable_formatos_invalidos.insert_at_cursor(header)
         self.data_formatos_invalidos = header
         for row in registros:           
-            self.variable_formatos_invalidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n")
-            self.data_formatos_invalidos = self.data_formatos_invalidos + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n"
+            self.variable_formatos_invalidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"     -     "+(str(row[6]))+"     -     "+(str(row[7]))+"     -       "+(str(row[8]))+"     -     "+(str(row[9]))+"\n")
+            self.data_formatos_invalidos = self.data_formatos_invalidos + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"     -     "+(str(row[6]))+"     -     "+(str(row[7]))+"     -       "+(str(row[8]))+"     -     "+(str(row[9]))+"\n"
         #cerrar conexion            
         self.cursor.close()
         self.db.close()
@@ -520,9 +528,11 @@ class herramienta_diag:
         self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
         self.cursor = self.db.cursor()
 
-        query = '''SELECT ni.id_nomb_inval, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
+        query = '''SELECT ni.id_nomb_inval, a.nombre_arch, a.ubicacion_arch, ac.id_analisis,
+                    ac.fecha_analisis, ac.hora_analisis, u.cedula, concat(u.nombre,' ',u.apellido)
                     FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
-                    inner join nombres_invalidos ni on a.id_archivo = ni.id_archivo'''
+                    inner join nombres_invalidos ni on a.id_archivo = ni.id_archivo
+                    inner join usuarios u on u.idusuarios = ac.idusuario'''
                     #inner join usuarios usr on usr.id_usuario = ac.id_usuario
                     #where usr.id_usuario = @varglobal
 
@@ -532,12 +542,12 @@ class herramienta_diag:
         
         #values = dict()
         self.variable_nombres_invalidos = Gtk.TextBuffer()
-        header = "Id del Análisis con Nombre Invalido         -         Nombre del Archivo         -         Ubicación del Archivo        -        Id del Análisis\n"
+        header = "Id del Análisis con Nombre Invalido         -         Nombre del Archivo         -         Ubicación del Archivo        -        Id del Análisis      -      Fecha    -    Hora     -    Cédula    -    Nombre y Apellido\n"
         self.variable_nombres_invalidos.insert_at_cursor(header)
         self.data_nombres_invalidos = header
         for row in registros:           
-            self.variable_nombres_invalidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"\n")
-            self.data_nombres_invalidos = self.data_nombres_invalidos + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"\n"
+            self.variable_nombres_invalidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"     -     "+(str(row[6]))+"     -     "+(str(row[7]))+"\n")
+            self.data_nombres_invalidos = self.data_nombres_invalidos + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"     -     "+(str(row[6]))+"     -     "+(str(row[7]))+"\n"
         #cerrar conexion            
         self.cursor.close()
         self.db.close()
