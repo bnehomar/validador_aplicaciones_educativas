@@ -63,6 +63,9 @@ class herramienta_diag:
         self.wTree = Gtk.Builder()
         self.wTree.add_from_file("herramienta_diag_gui.glade")
         self.gui()
+
+    def initDb(self):
+        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
        
     def gui(self):
         # importamos el archivo glade
@@ -77,6 +80,14 @@ class herramienta_diag:
         self.text_entry_clave = self.constructor.get_object("text_entry_clave")
         #self.boton_aceptar_sesion = self.constructor.get_object("boton_aceptar_sesion")
         self.inicio_sesion.connect ("delete_event", Gtk.main_quit)
+
+        self.window_errores_iniciar_sesion = self.constructor.get_object("window_errores_iniciar_sesion")
+        self.label_errores_iniciar_sesion = self.constructor.get_object("label_errores_iniciar_sesion")
+
+        ####datos inicio sesion
+        self.entry_inicio_sesion_cedula = self.constructor.get_object("entry_inicio_sesion_cedula")
+        self.entry_inicio_sesion_clave = self.constructor.get_object("entry_inicio_sesion_clave")
+
         
         # ventana principal
         self.ventana = self.constructor.get_object("ventana")
@@ -153,16 +164,106 @@ class herramienta_diag:
         self.ventana_visor.show()
 
     def on_boton_aceptar_sesion_clicked(self, widget):
-        print "on_boton_aceptar_sesion_clicked"
+        print "boton_aceptar_sesion"
+        errores = self.validar_datos_usuario()
+
+        if len(errores) > 0:
+            self.window_errores_iniciar_sesion.show()
+            errores_text = ""
+            for error in errores:
+                errores_text =  errores_text + error +"\n"
+            self.label_errores_iniciar_sesion.set_text(errores_text)
+        else:
+            print "inicio sesion"
+            self.ventana.show()
         self.inicio_sesion.hide()
-        self.ventana.show()
+        
+
+
+    def validar_datos_usuario(self):
+
+        errores = []
+        self.cedula = self.entry_inicio_sesion_cedula.get_text()
+        self.clave = self.entry_inicio_sesion_clave.get_text()
+
+        if self.cedula == "":
+            errores.append("La cédula no puede estar vacia")
+        else:
+            if not self.cedula.isdigit():
+                errores.append("La cédula debe ser numérica")
+            else:
+                if self.cedula_existe(self.cedula):
+                    print "cedula existe"
+                else:
+                    errores.append("Cédula o Clave errados, por favor verifique")
+                
+
+                if self.clave == "":
+                    errores.append("La clave no puede estar vacia")
+                else:
+                    if self.clave_existe(self.clave):
+                        print "clave existe"
+                    else:
+                        errores.append("Cédula o Clave errados, por favor verifique")
+        #else:
+        return errores
+
+
+
+    def cedula_existe(self, cedula):
+
+        existe = False
+        #Se crea conexión a db
+        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.initDb()
+
+        self.cursor = self.db.cursor()
+        #Se verifica que existe la cedula
+        ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = %s''')                                 
+        self.cursor.execute(ver_cedula, cedula)
+
+        if self.cursor.fetchone() != None:
+            existe = True
+
+        #cerrar conexion            
+        self.cursor.close()
+        self.db.close()
+
+        return existe
+
+    def clave_existe(self, clave):
+
+        existe = False
+        #Se crea conexión a db
+        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.initDb()
+
+        self.cursor = self.db.cursor()
+        #Se verifica que existe la clave
+        ver_clave = ('''SELECT clave FROM usuarios WHERE clave = %s''')                                 
+        self.cursor.execute(ver_clave, clave)
+
+        if self.cursor.fetchone() != None:
+            existe = True
+
+        #cerrar conexion            
+        self.cursor.close()
+        self.db.close()
+
+        return existe
         
 ###############consultas###################################
 ###############consultas###################################
 ###############consultas###################################
 ###############consultas################################### 
 ###############consultas###################################
-###############consultas###################################    
+###############consultas###################################
+###############consultas###################################
+###############consultas###################################
+###############consultas###################################
+###############consultas################################### 
+###############consultas###################################
+###############consultas###################################       
 
     #def on_boton_consultar_clicked(self, widget):
 		#self.ventana_consultas.show()
@@ -189,6 +290,9 @@ class herramienta_diag:
 		registros = self.cursor.fetchall()
         
 		#values = dict()
+
+
+
 		self.variable_duplicados_eliminados = Gtk.TextBuffer()
 		for row in registros:			
 			self.variable_duplicados_eliminados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
@@ -350,6 +454,20 @@ class herramienta_diag:
         #print "lissssta :"+self.lista1
        # self.ventana_visor.show()
 	
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
+######################    fin de consultas    #############################
 ######################    fin de consultas    #############################
 
 
