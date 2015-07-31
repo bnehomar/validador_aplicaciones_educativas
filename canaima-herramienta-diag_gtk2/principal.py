@@ -188,7 +188,7 @@ class herramienta_diag:
         else:
             print "inicio sesion"
             self.ventana.show()
-        self.inicio_sesion.hide()
+            self.inicio_sesion.hide()
         
 
 
@@ -197,27 +197,34 @@ class herramienta_diag:
         errores = []
         self.cedula = self.entry_inicio_sesion_cedula.get_text()
         self.clave = self.entry_inicio_sesion_clave.get_text()
+
+        self.id_usuario = self.get_idusuario_cedula(self.cedula, self.clave)
+
+        if self.id_usuario == -1:
+            errores.append("La cédula o la clave son invalidos. Por favor verifique.")
+
+
         #self.activo = True
 
-        if self.cedula == "":
-            errores.append("La cédula no puede estar vacia")
-        else:
-            if not self.cedula.isdigit():
-                errores.append("La cédula debe ser numérica")
-            else:
-                if self.cedula_existe(self.cedula):
-                    print "cedula existe"
-                else:
-                    errores.append("Cédula o Clave errados, por favor verifique")
+        # if self.cedula == "":
+        #     errores.append("La cédula no puede estar vacia")
+        # else:
+        #     if not self.cedula.isdigit():
+        #         errores.append("La cédula debe ser numérica")
+        #     else:
+        #         if self.cedula_existe(self.cedula):
+        #             print "cedula existe"
+        #         else:
+        #             errores.append("Cédula o Clave errados, por favor verifique")
 
 
-                if self.clave == "":
-                    errores.append("La clave no puede estar vacia")
-                else:
-                    if self.clave_existe(self.clave):
-                        print "clave existe"
-                    else:
-                        errores.append("Cédula o Clave errados, por favor verifique")
+        #         if self.clave == "":
+        #             errores.append("La clave no puede estar vacia")
+        #         else:
+        #             if self.clave_existe(self.clave):
+        #                 print "clave existe"
+        #             else:
+        #                 errores.append("Cédula o Clave errados, por favor verifique")
 
                 #if self.activo_existe(self.activo):
                     #print "activo existe"
@@ -226,49 +233,72 @@ class herramienta_diag:
         #else:
         return errores
 
+    def get_idusuario_cedula(self, cedula, clave):
 
-
-    def cedula_existe(self, cedula):
-
-        existe = False
+        id_usuario = -1
         #Se crea conexión a db
         #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
         self.initDb()
 
         self.cursor = self.db.cursor()
-        #Se verifica que existe la cedula
-        ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = %s''')                                 
-        self.cursor.execute(ver_cedula, cedula)
+        #Se verifica que no existe la cedula
+        ver_cedula = ('''SELECT idusuarios FROM usuarios WHERE cedula = %s and clave = %s and activo = 'S'; ''')
+        args = (cedula, clave)
+        self.cursor.execute(ver_cedula, args)
+        row = self.cursor.fetchone()
 
-        if self.cursor.fetchone() != None:
-            existe = True
-
-        #cerrar conexion            
-        self.cursor.close()
-        self.db.close()
-
-        return existe
-
-    def clave_existe(self, clave):
-
-        existe = False
-        #Se crea conexión a db
-        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
-        self.initDb()
-
-        self.cursor = self.db.cursor()
-        #Se verifica que existe la clave
-        ver_clave = ('''SELECT clave FROM usuarios WHERE clave = %s''')                                 
-        self.cursor.execute(ver_clave, clave)
-
-        if self.cursor.fetchone() != None:
-            existe = True
+        if row is not None:         
+            id_usuario = row[0]
 
         #cerrar conexion            
         self.cursor.close()
         self.db.close()
 
-        return existe
+        return id_usuario
+
+
+
+    # def cedula_existe(self, cedula):
+
+    #     existe = False
+    #     #Se crea conexión a db
+    #     #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+    #     self.initDb()
+
+    #     self.cursor = self.db.cursor()
+    #     #Se verifica que existe la cedula
+    #     ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = %s''')                                 
+    #     self.cursor.execute(ver_cedula, cedula)
+
+    #     if self.cursor.fetchone() != None:
+    #         existe = True
+
+    #     #cerrar conexion            
+    #     self.cursor.close()
+    #     self.db.close()
+
+    #     return existe
+
+    # def clave_existe(self, clave):
+
+    #     existe = False
+    #     #Se crea conexión a db
+    #     #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+    #     self.initDb()
+
+    #     self.cursor = self.db.cursor()
+    #     #Se verifica que existe la clave
+    #     ver_clave = ('''SELECT clave FROM usuarios WHERE clave = %s''')                                 
+    #     self.cursor.execute(ver_clave, clave)
+
+    #     if self.cursor.fetchone() != None:
+    #         existe = True
+
+    #     #cerrar conexion            
+    #     self.cursor.close()
+    #     self.db.close()
+
+    #     return existe
 
     #def activo_existe(self, activo):
 
@@ -319,10 +349,12 @@ class herramienta_diag:
 		self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
 		self.cursor = self.db.cursor()
 
-		query = '''SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis
-					FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
-					inner join archivos_duplicados ad on a.id_archivo = ad.id_archivo
-					inner join archivos_duplicados_eliminados ade on ad.id_arch_dup = ade.id_arch_dup'''
+		query = '''SELECT ad.id_arch_dup, a.nombre_arch, a.ubicacion_arch, ac.id_analisis, 
+                    ac.fecha_analisis, ac.hora_analisis, u.cedula, concat(u.nombre,' ',u.apellido)
+                    FROM analisis_contenido ac inner join archivo a on ac.id_analisis = a.id_analisis 
+                    inner join archivos_duplicados ad on a.id_archivo = ad.id_archivo
+                    inner join archivos_duplicados_eliminados ade on ad.id_arch_dup = ade.id_arch_dup
+                    inner join usuarios u on u.idusuarios = ac.idusuario'''
 				
 		#args = (id_analisis_contenido)
 		self.cursor.execute(query)
@@ -331,12 +363,12 @@ class herramienta_diag:
         
 		#values = dict()
 		self.variable_duplicados_eliminados = Gtk.TextBuffer()
-		header = "Id del Archivo Duplicado         -         Nombre del Archivo          -         Ubicacion del Archivo         -         Id del Analisis\n"
+		header = "Id del Archivo Duplicado         -         Nombre del Archivo          -         Ubicacion del Archivo         -         Id del Analisis    - Fecha del Análisis   - Hora del Análisis    - Cédula del analista    -  Nombre y Apellido del Analista\n"
 		self.variable_duplicados_eliminados.insert_at_cursor(header)
 		self.data_duplicados_eliminados = header
 		for row in registros:			
-			self.variable_duplicados_eliminados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
-			self.data_duplicados_eliminados = self.data_duplicados_eliminados + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n"
+			self.variable_duplicados_eliminados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+ "     -     "+ (str(row[4]))+ "     -   "+(str(row[5]))+"      -      "+(str(row[6]))+"     -     "+(str(row[7]))+"\n")
+			self.data_duplicados_eliminados = self.data_duplicados_eliminados + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+ "     -     "+ (str(row[4]))+ "     -   "+(str(row[5]))+"      -      "+(str(row[6]))+"     -     "+(str(row[7]))+"\n"
 
 		#cerrar conexion			
 		self.cursor.close()
@@ -928,46 +960,46 @@ class herramienta_diag:
         self.data_cd=os.path.exists(self.ruta.get_text())        
         print self.data_cd
         if self.data_cd:			
-			#Se crea conexión a db
-			self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
-			self.cursor = self.db.cursor()
-			#abrir transaccion db
-			self.db.autocommit(False)			
-			   #self.proceso_nombre_invalidos()
-			try:
-				#Se crear un registro en la tabla analisis_contenido
-				add_archivo = ('''INSERT INTO analisis_contenido
-						(fecha_analisis, hora_analisis)
-						VALUES (CURRENT_DATE(), CURRENT_TIME())''')
-				self.cursor.execute (add_archivo)
-								
-				self.last_id_analisis_contenido = self.get_last_id()				
-				
-				if self.proceso_formatos_invalidos(self.last_id_analisis_contenido):
-					if self.proceso_nombre_invalidos(self.last_id_analisis_contenido):						    
-					    if self.proceso_duplicados(self.last_id_analisis_contenido):
-							
-					        self.barra.set_fraction(1)
+            #Se crea conexión a db
+            self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+            self.cursor = self.db.cursor()
+            #abrir transaccion db
+            self.db.autocommit(False)			
+               #self.proceso_nombre_invalidos()
+            try:
+                #Se crear un registro en la tabla analisis_contenido
+                add_archivo = ('''INSERT INTO analisis_contenido (fecha_analisis, hora_analisis, idusuario) VALUES (CURRENT_DATE(), CURRENT_TIME(), %s)''')
+
+                args = (self.id_usuario)
+                self.cursor.execute (add_archivo, args)
+                				
+                self.last_id_analisis_contenido = self.get_last_id()				
+
+                if self.proceso_formatos_invalidos(self.last_id_analisis_contenido):
+                	if self.proceso_nombre_invalidos(self.last_id_analisis_contenido):						    
+                	    if self.proceso_duplicados(self.last_id_analisis_contenido):
+                			
+                	        self.barra.set_fraction(1)
                             ## Falta validar que los buffers no estén vacios para mostrar los botones
-					        #self.boton_nombres_invalidos.set_sensitive(True)
-					        #self.boton_formatos_invalidos.set_sensitive(True)
-					        #self.boton_duplicados.set_sensitive(True)
-					        
-					        #self.boton_consultar.set_sensitive(True)
-					        self.boton_corregir.set_sensitive(True)
-				
-				self.db.commit()
-			except:
-				print("Error inesperado:", sys.exc_info())
-				self.db.rollback()
-								
-			#cerrar transaccion db
-			self.db.autocommit(True)
-			#cerrar conexion			
-			self.cursor.close()
-			self.db.close()
+                	        #self.boton_nombres_invalidos.set_sensitive(True)
+                	        #self.boton_formatos_invalidos.set_sensitive(True)
+                	        #self.boton_duplicados.set_sensitive(True)
+                	        
+                	        #self.boton_consultar.set_sensitive(True)
+                	        self.boton_corregir.set_sensitive(True)
+
+                self.db.commit()
+            except:
+            	print("Error inesperado:", sys.exc_info())
+            	self.db.rollback()
+            					
+            #cerrar transaccion db
+            self.db.autocommit(True)
+            #cerrar conexion			
+            self.cursor.close()
+            self.db.close()
         else:
-			self.window1.show()
+        	self.window1.show()
          
     def on_boton_visor_grabar_clicked(self,widget):
         self.filechooser.show()
