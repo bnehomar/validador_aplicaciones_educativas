@@ -100,7 +100,8 @@ class herramienta_diag:
         self.boton_corregir = self.constructor.get_object("boton_corregir")
 
 		#####botones de la ventana consulta####################
-        self.ventana_consultas = self.constructor.get_object("ventana-consultas")
+        self.ventana_consultas = self.constructor.get_object("ventana_consultas")
+        self.ventana_consultas.connect ("delete_event", self.on_hide_ventana_consultas)
         #self.ventana_consultas.connect ("delete_event", Gtk.main_quit)
         #self.consulta_duplicados_eliminados = self.constructor.get.object("consulta_duplicados_eliminados")
         
@@ -121,6 +122,8 @@ class herramienta_diag:
         self.filechooser = self.constructor.get_object("filechooser")
         #no existe ruta 
         self.window1 = self.constructor.get_object("window1")
+        self.window1.connect ("delete_event", self.on_hide_window1)
+
         self.button_existe = self.constructor.get_object("button_existe")
         #self.ventana.show()
         self.inicio_sesion.show()
@@ -132,6 +135,15 @@ class herramienta_diag:
 		#Ventana consultar
         self.ventana_consultas = self.constructor.get_object("ventana_consultas")
         #self.ventana_consultas.connect("delete_event", self.ocultar_ventana_consultas)
+
+    def on_hide_ventana_consultas(self, window, event):
+        self.ventana_consultas.hide()
+        return True
+
+    def on_hide_window1(self, window, event):
+        self.window1.hide()
+        return True
+
     
     def ocultar_visor(self, window,event):
         self.ventana_visor.hide()
@@ -185,6 +197,7 @@ class herramienta_diag:
         errores = []
         self.cedula = self.entry_inicio_sesion_cedula.get_text()
         self.clave = self.entry_inicio_sesion_clave.get_text()
+        #self.activo = True
 
         if self.cedula == "":
             errores.append("La cédula no puede estar vacia")
@@ -196,7 +209,7 @@ class herramienta_diag:
                     print "cedula existe"
                 else:
                     errores.append("Cédula o Clave errados, por favor verifique")
-                
+
 
                 if self.clave == "":
                     errores.append("La clave no puede estar vacia")
@@ -205,6 +218,11 @@ class herramienta_diag:
                         print "clave existe"
                     else:
                         errores.append("Cédula o Clave errados, por favor verifique")
+
+                #if self.activo_existe(self.activo):
+                    #print "activo existe"
+                #else:
+                    #errores.append("Acceso Denegado")
         #else:
         return errores
 
@@ -251,6 +269,28 @@ class herramienta_diag:
         self.db.close()
 
         return existe
+
+    #def activo_existe(self, activo):
+
+        #existe = False
+        #Se crea conexión a db
+        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        #self.initDb()
+
+        #self.cursor = self.db.cursor()
+        #Se verifica que existe la clave
+        #ver_activo = ('''SELECT clave FROM usuarios WHERE activo = S''')                                 
+        #self.cursor.execute(ver_activo, activo)
+
+        #if self.cursor.fetchone() != None:
+            #existe = True
+
+        #cerrar conexion            
+        #self.cursor.close()
+        #self.db.close()
+
+        #return existe
+        
         
 ###############consultas###################################
 ###############consultas###################################
