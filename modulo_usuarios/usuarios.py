@@ -41,7 +41,10 @@ class Proceso_usuarios():
         self.wTree = Gtk.Builder()
         self.wTree.add_from_file("modulo_usuario_gui.glade")
         self.inicializar_ventanas_glade()
-    
+
+    def initDb(self):
+    	self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+
     def inicializar_ventanas_glade(self):
     	self.constructor= Gtk.Builder()
         self.constructor.add_from_file("modulo_usuario_gui.glade")
@@ -111,6 +114,35 @@ class Proceso_usuarios():
         self.window_usuario_modificado = self.constructor.get_object("window_usuario_modificado")
         self.window_usuario_modificado.connect ("delete_event", self.on_hide_window_usuario_modificado)
 
+        self.window_eliminar_usuario = self.constructor.get_object("window_eliminar_usuario")
+        self.window_eliminar_usuario.connect ("delete_event", self.on_hide_window_eliminar_usuario)
+
+        self.entry_cedula_usuario_eliminar = self.constructor.get_object("entry_cedula_usuario_eliminar")
+
+        self.window_confirmar_eliminar = self.constructor.get_object("window_confirmar_eliminar")
+        self.window_confirmar_eliminar.connect ("delete_event", self.on_hide_window_confirmar_eliminar)
+
+        self.label_confirmar_eliminar_cedula = self.constructor.get_object("label_confirmar_eliminar_cedula")
+        self.label_confirmar_eliminar_nombre = self.constructor.get_object("label_confirmar_eliminar_nombre")
+        self.label_confirmar_eliminar_apellido = self.constructor.get_object("label_confirmar_eliminar_apellido")
+
+        self.window_usuario_eliminado = self.constructor.get_object("window_usuario_eliminado")
+        self.window_usuario_eliminado.connect ("delete_event", self.on_hide_window_usuario_eliminado)
+
+        self.window_consultar_usuario = self.constructor.get_object("window_consultar_usuario")
+        self.window_consultar_usuario.connect ("delete_event", self.on_hide_window_consultar_usuario)
+
+        self.entry_cedula_consultar = self.constructor.get_object("entry_cedula_consultar")
+
+        self.label_consulta_nombre = self.constructor.get_object("label_consulta_nombre")        
+        self.label_consulta_apellido = self.constructor.get_object("label_consulta_apellido")        
+        self.label_consulta_activo = self.constructor.get_object("label_consulta_activo")
+
+        self.label_mostrar_nombre = self.constructor.get_object("label_mostrar_nombre")        
+        self.label_mostrar_apellido = self.constructor.get_object("label_mostrar_apellido")        
+        self.label_mostrar_activo = self.constructor.get_object("label_mostrar_activo")
+
+
         self.window_menu_usuario.show()
 
     def on_combobox_activar_usuario_changed(self, widget, data=None):
@@ -153,6 +185,26 @@ class Proceso_usuarios():
     	self.window_usuario_modificado.hide()
     	return True
 
+    def on_hide_window_eliminar_usuario(self, window, event):
+    	self.window_eliminar_usuario.hide()
+    	return True
+
+    def on_hide_window_confirmar_eliminar(self, window, event):
+    	self.window_confirmar_eliminar.hide()
+    	return True
+
+    def on_hide_window_usuario_eliminado(self, window, event):
+    	self.window_usuario_eliminado.hide()
+    	return True 
+
+    def on_hide_window_consultar_usuario(self, window, event):
+    	self.window_consultar_usuario.hide()
+    	return True  	
+
+    def on_button_cancelar_eliminar_clicked(self, widget):
+    	self.window_confirmar_eliminar.hide()
+    	return True
+
     def on_boton_aceptar_incluir_usuario_clicked(self, widget):
 		print "boton_aceptar_incluir_usuario"
 		errores = self.validar_datos_usuario()
@@ -187,10 +239,19 @@ class Proceso_usuarios():
         	if not self.cedula.isdigit():
         		errores.append("La cédula debe ser numérica")
         	else:
-        		if self.cedula_existe(self.cedula):
-        			errores.append("La cédula ya existe. Coloque otra.")
+        		if len(self.cedula) != 8:
+        			errores.append("La debe cédula debe contener 8  caracteres")
+        		else:
+		    		if self.cedula_existe(self.cedula):
+		    			errores.append("La cédula ya existe. Coloque otra.")
         if self.clave == "":
         	errores.append("La clave no puede ser vacia")
+        else:
+        	if len(self.clave) > 8:
+        		errores.append("La clave no puede ser mayor de 8 caracteres")
+        	else:
+        		if len(self.clave) < 6:
+        			errores.append("La clave no puede ser menor de 6 caracteres")
 
     	return errores
 
@@ -198,7 +259,9 @@ class Proceso_usuarios():
 
     	existe = False
     	#Se crea conexión a db
-        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.initDb()
+
         self.cursor = self.db.cursor()
         #Se verifica que no existe la cedula
         ver_cedula = ('''SELECT cedula FROM usuarios WHERE cedula = %s''')                                 
@@ -215,7 +278,8 @@ class Proceso_usuarios():
 
     def insertar_usuario(self):
     	#Se crea conexión a db
-        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.initDb()
 
         if self.activo == "No":
         	act = "N"
@@ -258,8 +322,19 @@ class Proceso_usuarios():
     	self.window_cedula_modificar_usuario.show()
 
     def on_button_aceptar_cedula_no_existe_clicked(self, widget):
-    	self.window_cedula_no_existe.hide()
-    	self.entry_cedula_modificar.set_text("")
+	    self.window_cedula_no_existe.hide()
+	    self.entry_cedula_modificar.set_text("")
+
+	    self.entry_cedula_usuario_eliminar.set_text("")
+	    self.entry_cedula_consultar.set_text("")
+
+	    self.label_consulta_nombre.set_visible(False)        
+	    self.label_consulta_apellido.set_visible(False)       
+	    self.label_consulta_activo.set_visible(False)
+
+	    self.label_mostrar_nombre.set_visible(False)
+	    self.label_mostrar_apellido.set_visible(False)
+	    self.label_mostrar_activo.set_visible(False)
 
     def on_button_aceptar_cedula_modificar_clicked(self, widget):
     	cedula = self.entry_cedula_modificar.get_text()
@@ -276,7 +351,9 @@ class Proceso_usuarios():
 
     	usuario = dict()
     	#Se crea conexión a db
-        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.initDb()
+
         self.cursor = self.db.cursor()
         #Se verifica que no existe la cedula
         ver_cedula = ('''SELECT idusuarios, nombre, apellido, clave, activo FROM usuarios WHERE cedula = %s''')                                 
@@ -346,19 +423,21 @@ class Proceso_usuarios():
         	errores.append("El nombre no puede ser vacio")
         if self.apellido == "":
         	errores.append("El apellido no puede ser vacio")
-        if self.cedula == "":
-        	errores.append("La cédula no puede ser vacia")
-        else:
-        	if not self.cedula.isdigit():
-        		errores.append("La cédula debe ser numérica")
         if self.clave == "":
         	errores.append("La clave no puede ser vacia")
+        else:
+        	if len(self.clave) > 8:
+        		errores.append("La clave no puede ser mayor de 8 caracteres")
+        	else:
+        		if len(self.clave) < 6:
+        			errores.append("La clave no puede ser menor de 6 caracteres")
 
     	return errores
 
     def modificar_usuario(self):
     	#Se crea conexión a db
-        self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.initDb()
 
         if self.activo == "No":
         	act = "N"
@@ -386,11 +465,91 @@ class Proceso_usuarios():
         self.cursor.close()
         self.db.close()
 
+    def on_button_confirmar_eliminar_clicked(self, widget):
+    	print "on_button_confirmar_eliminar_clicked"
+    	self.eliminar_usuario()
+
+    def eliminar_usuario(self):
+    	#Se crea conexión a db
+        #self.db = MySQLdb.connect("localhost","dc_ce","dc_ce","dc_ce")
+        self.initDb()
+
+        try:
+            self.cursor = self.db.cursor()
+	         
+	        #Se actualiza un registro en la tabla usuarios
+            del_usuario = ('''UPDATE usuarios SET  activo='N' WHERE idusuarios=%s;''')
+
+            args = (self.idusuarios)
+            self.cursor.execute (del_usuario, args)
+            self.db.commit()
+            print "usuario eliminado"
+            self.window_usuario_eliminado.show()
+        except:
+            print("Error inesperado:", sys.exc_info())
+            self.db.rollback()
+        #cerrar conexion			
+        self.cursor.close()
+        self.db.close()
+
     def on_button_usuario_modificado_clicked(self, widget):
         self.window_usuario_modificado.hide()
         self.window_modificar_usuario.hide()
-    	
 
+    def on_button_aceptar_usuario_eliminado_clicked(self, widget):
+        self.window_usuario_eliminado.hide()
+        self.window_confirmar_eliminar.hide()
+
+    def on_boton_eliminar_usuario_clicked(self, widget):
+		print "boton_eliminar_usuario"
+		self.entry_cedula_usuario_eliminar.set_text("")
+		self.window_eliminar_usuario.show()
+
+    def on_button_aceptar_eliminar_usuario_clicked(self, widget):
+    	cedula = self.entry_cedula_usuario_eliminar.get_text()
+    	
+    	usuario = self.get_cedula(cedula)
+
+    	if len(usuario) > 0:
+    		self.label_confirmar_eliminar_cedula.set_text(usuario["cedula"])
+    		self.label_confirmar_eliminar_nombre.set_text(usuario["nombre"])
+        	self.label_confirmar_eliminar_apellido.set_text(usuario["apellido"])
+
+        	self.idusuarios = usuario["idusuarios"]
+
+    		self.window_confirmar_eliminar.show()
+    		self.window_eliminar_usuario.hide()
+    	else:
+    		self.window_cedula_no_existe.show()
+
+    def on_boton_consultar_usuario_clicked(self, widget):
+    	print "on_boton_consultar_usuario_clicked"
+    	self.window_consultar_usuario.show()
+
+    def on_button_aceptar_cosulta_clicked(self, widget):
+    	print "on_button_aceptar_cosulta_clicked"
+    	cedula = self.entry_cedula_consultar.get_text()
+    	
+    	usuario = self.get_cedula(cedula)
+
+    	if len(usuario) > 0:
+		    self.label_consulta_nombre.set_visible(True)        
+		    self.label_consulta_apellido.set_visible(True)       
+		    self.label_consulta_activo.set_visible(True)
+
+		    self.label_mostrar_nombre.set_text(usuario["nombre"])
+		    self.label_mostrar_nombre.set_visible(True)
+
+		    self.label_mostrar_apellido.set_text(usuario["apellido"])
+		    self.label_mostrar_apellido.set_visible(True)
+
+		    self.label_mostrar_activo.set_text(usuario["activo"])
+		    self.label_mostrar_activo.set_visible(True)
+
+		    self.entry_cedula_consultar.set_text("")
+    	else:
+    		self.window_cedula_no_existe.show()
+    	
 if __name__ == '__main__':
     p = Proceso_usuarios() 
     Gtk.main()
