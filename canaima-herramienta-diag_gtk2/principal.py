@@ -330,17 +330,19 @@ class herramienta_diag:
 		registros = self.cursor.fetchall()
         
 		#values = dict()
-
-
-
 		self.variable_duplicados_eliminados = Gtk.TextBuffer()
+		header = "Id del Archivo Duplicado         -         Nombre del Archivo          -         Ubicacion del Archivo         -         Id del Analisis\n"
+		self.variable_duplicados_eliminados.insert_at_cursor(header)
+		self.data_duplicados_eliminados = header
 		for row in registros:			
 			self.variable_duplicados_eliminados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
+			self.data_duplicados_eliminados = self.data_duplicados_eliminados + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n"
 
 		#cerrar conexion			
 		self.cursor.close()
 		self.db.close()
 
+		self.consulta = "duplicados_eliminados"
 		self.textview.set_buffer(self.variable_duplicados_eliminados)
 		self.ventana_visor.show()
 
@@ -364,13 +366,18 @@ class herramienta_diag:
         
 		#values = dict()
 		self.variable_formatos_corregidos = Gtk.TextBuffer()
+		header = "Id del Archivo con Formato Invalido         -         Id del Archivo          -         Nombre del Archivo         -         Ubicación del Archivo         -         Tipo del Formato         -         Id del Análisis\n"
+		self.variable_formatos_corregidos.insert_at_cursor(header)		
+		self.data_formatos_corregidos = header
 		for row in registros:			
 			self.variable_formatos_corregidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n")
+			self.data_formatos_corregidos = self.data_formatos_corregidos +str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n"
 
 		#cerrar conexion			
 		self.cursor.close()
 		self.db.close()
 
+		self.consulta = "formatos_corregidos"
 		self.textview.set_buffer(self.variable_formatos_corregidos)
 		self.ventana_visor.show()
 	
@@ -392,13 +399,17 @@ class herramienta_diag:
         
 		#values = dict()
 		self.variable_nombres_corregidos = Gtk.TextBuffer()
+		header = "Id Nombre Invalido        -       Nombre del Archivo         -       Ubicación del Archivo          -         Id del Análisis\n"
+		self.variable_nombres_corregidos.insert_at_cursor(header)
+		self.data_nombres_corregidos = header
 		for row in registros:			
 			self.variable_nombres_corregidos.insert_at_cursor((str(row[0]))+"        -        "+(str(row[1]))+"        -        "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
-
+			self.data_nombres_corregidos = self.data_nombres_corregidos + (str(row[0]))+"        -        "+(str(row[1]))+"        -        "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n"
 		#cerrar conexion			
 		self.cursor.close()
 		self.db.close()
 
+		self.consulta = "nombres_corregidos"
 		self.textview.set_buffer(self.variable_nombres_corregidos)
 		self.ventana_visor.show()
 	
@@ -421,13 +432,18 @@ class herramienta_diag:
         
         #values = dict()
         self.variable_duplicados = Gtk.TextBuffer()
+        header = " Id del Archivo Duplicado        -         Nombre del Archivo         -         Ubicación del Archivo         -         Id del Análisis\n"
+        self.variable_duplicados.insert_at_cursor(header)
+        self.data_duplicados = header
         for row in registros:           
             self.variable_duplicados.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n")
+            self.data_duplicados = self.data_duplicados + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+ "         -         "+(str(row[3]))+"\n"
 
         #cerrar conexion            
         self.cursor.close()
         self.db.close()
 
+        self.consulta = "archivos_duplicados"
         self.textview.set_buffer(self.variable_duplicados)
         self.ventana_visor.show()
 
@@ -452,12 +468,17 @@ class herramienta_diag:
         
         #values = dict()
         self.variable_formatos_invalidos = Gtk.TextBuffer()
+        header = "Id del Formato Invalido         -         Id del Archivo         -         Nombre del Archivo        -        Ubicación del Archivo        -        Tipo del Formato         -         Id del Análisis\n"
+        self.variable_formatos_invalidos.insert_at_cursor(header)
+        self.data_formatos_invalidos = header
         for row in registros:           
             self.variable_formatos_invalidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n")
+            self.data_formatos_invalidos = self.data_formatos_invalidos + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"        -        "+(str(row[4]))+ "         -         "+(str(row[5]))+"\n"
         #cerrar conexion            
         self.cursor.close()
         self.db.close()
 
+        self.consulta = "formatos_invalidos"
         self.textview.set_buffer(self.variable_formatos_invalidos)
         self.ventana_visor.show()
 
@@ -479,12 +500,17 @@ class herramienta_diag:
         
         #values = dict()
         self.variable_nombres_invalidos = Gtk.TextBuffer()
+        header = "Id del Análisis con Nombre Invalido         -         Nombre del Archivo         -         Ubicación del Archivo        -        Id del Análisis\n"
+        self.variable_nombres_invalidos.insert_at_cursor(header)
+        self.data_nombres_invalidos = header
         for row in registros:           
             self.variable_nombres_invalidos.insert_at_cursor(str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"\n")
+            self.data_nombres_invalidos = self.data_nombres_invalidos + str(row[0])+"         -         "+(str(row[1]))+"         -         "+(str(row[2]))+"        -        "+(str(row[3]))+"\n"
         #cerrar conexion            
         self.cursor.close()
         self.db.close()
 
+        self.consulta = "nombres_invalidos"
         self.textview.set_buffer(self.variable_nombres_invalidos)
         self.ventana_visor.show()
 
@@ -954,23 +980,47 @@ class herramienta_diag:
         
     def on_boton_filechooser_grabar_clicked(self,widget):
         #funcion grabar del filechooser
-        self.ruta_grabar = str(self.filechooser.get_filename())
-        self.lista = str(self.lista1)
+        #self.ruta_grabar = str(self.filechooser.get_filename())
+        self.ruta_grabar = str(self.filechooser.get_current_folder())
+        #self.lista = str(self.lista1)
         #print "lissssta :"+self.lista
-        #print "ruta a imprimir"+self.ruta_grabar
-        self.escribir_archivo(self.lista,self.ruta_grabar)
+        print "ruta a imprimir"+self.ruta_grabar
+        self.escribir_archivo(self.consulta, self.ruta_grabar)
     
-    def escribir_archivo(self,lista,ruta ):
+    def escribir_archivo(self, consulta, ruta):
         #print "funcion para escribir en archivos"
-        #print "ruta a usar dentro de la funcion:"+ruta
-        archivo = open(ruta, 'w')
-        if  lista == "formatos":
-           archivo.write(self.data_formatos)
-        if  lista == "invalidos":
-           archivo.write(self.data_invlidos)
-        if lista == "repetidos":
-            archivo.write(self.data_find)
-        archivo.close()
+        #print "ruta a usar dentro de la funcion:"+ruta        
+
+        if consulta == "duplicados_eliminados":
+        	archivo = open(ruta+"/duplicados_eliminados.txt", 'w')
+        	archivo.write(self.data_duplicados_eliminados)
+        	archivo.close()
+        else:
+        	if consulta == "formatos_corregidos":
+        		archivo = open(ruta+"/formatos_corregidos.txt", 'w')
+        		archivo.write(self.data_formatos_corregidos)
+        		archivo.close()
+        	else:
+        		if consulta == "nombres_corregidos":
+        			archivo = open(ruta+"/nombres_corregidos.txt", 'w')
+        			archivo.write(self.data_nombres_corregidos)
+        			archivo.close()
+        		else:
+        			if consulta == "archivos_duplicados":
+        				archivo = open(ruta+"/archivos_duplicados.txt", 'w')
+        				archivo.write(self.data_duplicados)
+        				archivo.close()
+        			else:
+        				if consulta == "formatos_invalidos":
+        					archivo = open(ruta+"/formatos_invalidos.txt", 'w')
+        					archivo.write(self.data_formatos_invalidos)
+        					archivo.close()
+        				else:
+        					if consulta == "nombres_invalidos":
+        						archivo = open(ruta+"/nombres_invalidos.txt", 'w')
+        						archivo.write(self.data_nombres_invalidos)
+        						archivo.close()
+        
         self.filechooser.hide()
         self.ventana_visor.hide()
          
